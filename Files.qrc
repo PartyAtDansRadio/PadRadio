@@ -1,0 +1,7 @@
+ <!DOCTYPE RCC>
+
+<RCC>
+   <qresource prefix="/">
+       <file alias="PadImg">padLogo.png</file>
+   </qresource>
+</RCC>
