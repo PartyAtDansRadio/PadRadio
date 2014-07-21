@@ -3,7 +3,7 @@
 
 PadRadio is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation version 3.
+the Free Software Foundation.
 
 PadRadio is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,8 +21,12 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 
 #include <QMainWindow>
 #include <QMediaPlayer>
+#include <QMediaMetaData>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QTimer>
 
 namespace Ui
 {
@@ -35,12 +39,24 @@ class Window : public QMainWindow
 
 public:
     explicit Window(QWidget *parent = 0);
-    void setImage(QGraphicsView *view);
+    void updateImage();
     ~Window();
 
+private slots:
+    void mainLoop();
+    void updateImageReply(QNetworkReply* reply);
+    void updateMetaData();
+    void metaDataReply(QNetworkReply* reply);
+    void metaDidUpdate();
+
+signals:
+    void metaUpdate();
+
 private:
+    QList<QString> metaData;
     Ui::Window *ui;
     QMediaPlayer *mediaPlayer;
+    QTimer *timer;
 };
 
 #endif // WINDOW_H
