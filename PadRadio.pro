@@ -12,16 +12,16 @@ TARGET = PadRadio
 
 TEMPLATE = app
 
+INCLUDEPATH += $$PWD
+
 SOURCES += main.cpp\
-        window.cpp \
-    scrolltext.cpp
+    window.cpp \
+    $$PWD/scrolltext.cpp
 
 HEADERS += window.h \
-    scrolltext.h
+    $$PWD/scrolltext.h
 
 FORMS   += window.ui
-
-INCLUDEPATH += /
 
 CONFIG  += mobility
 
@@ -35,4 +35,3 @@ OTHER_FILES += \
     README.md
 
 RESOURCES += Files.qrc
-
