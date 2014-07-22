@@ -13,11 +13,15 @@ TARGET = PadRadio
 TEMPLATE = app
 
 SOURCES += main.cpp\
-        window.cpp
+        window.cpp \
+    scrolltext.cpp
 
-HEADERS += window.h
+HEADERS += window.h \
+    scrolltext.h
 
 FORMS   += window.ui
+
+INCLUDEPATH += /
 
 CONFIG  += mobility
 

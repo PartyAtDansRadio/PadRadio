@@ -16,6 +16,8 @@ along with PadRadio. If not, see <http://www.gnu.org/licenses/>.
 See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
+#define LAGTIME 3000
+
 #include "window.h"
 #include "ui_window.h"
 
@@ -25,6 +27,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
 {
     //Setup UI
     ui->setupUi(this);
+    ui->nextSong->setSeparator("     ");
     updateImage();
 
     //Init meta data
@@ -38,8 +41,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     mediaPlayer->setVolume(50);
 
     //Setup events
-    connect(ui->playButton, SIGNAL(clicked()), mediaPlayer, SLOT(play()));
-    connect(ui->stopButton, SIGNAL(clicked()), mediaPlayer, SLOT(stop()));
+    playEnabled = false;
     connect(ui->volumeSlider, SIGNAL(valueChanged(int)), mediaPlayer, SLOT(setVolume(int)));
     connect(timer, SIGNAL(timeout()), this, SLOT(mainLoop()));
     connect(this, SIGNAL(metaUpdate()), SLOT(metaDidUpdate()));
@@ -52,17 +54,14 @@ void Window::mainLoop()
     QTime end = QTime::fromString(metaData[6], "m:ss");
     QTime now = QTime::currentTime();
     int toEnd = start.msecsTo(now);
-    int atEnd = QTime(0, 0, 0).msecsTo(end);
+    int atEnd = QTime(0, 0, 0).msecsTo(end) + LAGTIME;
     QString secs = QString::number((int)(toEnd/1000)%60);
     if(secs.length() == 1)
         secs = '0' + secs;
-    if(((float)toEnd/(float)atEnd)*100 > 100) {
+    if(((float)toEnd/(float)atEnd)*100 > 100)
         updateMetaData();
-    }
-    else {
-        ui->musicTimeLeft->setText(QString::number((int)((toEnd/(1000*60))%60)) + ":" + secs);
-        ui->progressBar->setValue(((float)toEnd/(float)atEnd)*1000);
-    }
+    ui->musicTimeLeft->setText(QString::number((int)((toEnd/(1000*60))%60)) + ":" + secs);
+    ui->progressBar->setValue(((float)toEnd/(float)atEnd)*1000);
 }
 
 void Window::updateImage()
@@ -123,12 +122,18 @@ void Window::metaDidUpdate()
     updateImage();
     ui->musicListeners->setText(metaData[0]);
     ui->musicMaxListeners->setText(metaData[1]);
-    ui->musicArtist->setText(metaData[4]);
-    ui->musicAlbum->setText(metaData[5]);
-    ui->musicTitle->setText(metaData[3]);
+    ui->musicArtist->setText(metaData[3]);
+    ui->musicAlbum->setText(metaData[4]);
+    ui->musicTitle->setText(metaData[5]);
     ui->musicYear->setText(metaData[7]);
     ui->musicType->setText(metaData[8]);
-    ui->musicTimeEnd->setText(metaData[6]);
+    ui->nextSong->setText("Next up is " + metaData[10] + "'s " +  metaData[12] + " from " + metaData[11] + "...");
+    QTime endTime = QTime::fromString(metaData[6], "m:ss");
+    int endMSecs = QTime(0, 0, 0).msecsTo(endTime) + LAGTIME;
+    QString endSecs = QString::number((int)(endMSecs/1000)%60);
+    if(endSecs.length() == 1)
+        endSecs = '0' + endSecs;
+    ui->musicTimeEnd->setText(QString::number((int)((endMSecs/(1000*60))%60)) + ":" + endSecs);
     if(!timer->isActive())
         mediaPlayer->play();
         timer->start(250);
@@ -137,4 +142,14 @@ void Window::metaDidUpdate()
 Window::~Window()
 {
     delete ui;
+}
+
+void Window::on_playButton_clicked()
+{
+    mediaPlayer->play();
+}
+
+void Window::on_stopButton_clicked()
+{
+    mediaPlayer->stop();
 }

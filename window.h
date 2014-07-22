@@ -48,12 +48,16 @@ private slots:
     void updateMetaData();
     void metaDataReply(QNetworkReply* reply);
     void metaDidUpdate();
+    void on_playButton_clicked();
+
+    void on_stopButton_clicked();
 
 signals:
     void metaUpdate();
 
 private:
     QList<QString> metaData;
+    bool playEnabled;
     Ui::Window *ui;
     QMediaPlayer *mediaPlayer;
     QTimer *timer;
