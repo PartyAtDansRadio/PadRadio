@@ -16,47 +16,35 @@ along with PadRadio. If not, see <http://www.gnu.org/licenses/>.
 See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef ALBUMART_H
+#define ALBUMART_H
 
-#include <QMainWindow>
-#include <QMediaPlayer>
-#include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QTimer>
-#include "sammedia.h"
+#include <QGraphicsView>
+#include <QImage>
+#include <QResizeEvent>
+#include <QGraphicsPixmapItem>
+#include <QMouseEvent>
 
-namespace Ui
-{
-    class Window;
-}
-
-class Window : public QMainWindow
+class AlbumArt : public QGraphicsView
 {
     Q_OBJECT
 
 public:
-    explicit Window(QWidget *parent = 0);
-    void updateImage(QUrl albumArt = QUrl());
-    ~Window();
+    explicit AlbumArt(QWidget *parent = 0);
+    void updateArt(QNetworkReply *img);
+    void updateArt(QString img = "");
 
 protected:
     void resizeEvent(QResizeEvent* event);
-    void keyPressEvent(QKeyEvent *event);
+    void mousePressEvent(QMouseEvent*);
 
 private:
-    bool playing; //Temp var, need to find this value in mediaPlayer
-    Ui::Window *ui;
-    SamMedia *mediaPlayer;
-    QTimer *timer;
+    QGraphicsScene *scene;
+    QGraphicsPixmapItem *pixmapItem;
 
-private slots:
-    void mainLoop();
-    void updateImageReply(QNetworkReply* reply);
-    void samDidMetaUpdate();
-    void fullscrean();
-    void on_playButton_clicked();
-    void on_stopButton_clicked();
+signals:
+    void clickedOn();
 };
 
-#endif // WINDOW_H
+#endif // ALBUMART_H
