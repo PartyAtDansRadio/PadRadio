@@ -22,14 +22,13 @@ AlbumArt::AlbumArt(QWidget *parent) : QGraphicsView(parent)
 {
     //Init art
     scene = new QGraphicsScene(this);
-    updateArt();
 }
 
 void AlbumArt::updateArt(QString img)
 {
     //Update using local backup image
     scene->clear();
-    pixmapItem = scene->addPixmap(QPixmap(":/PadImg"));
+    pixmapItem = scene->addPixmap(QPixmap(img));
     fitInView(pixmapItem);
     setScene(scene);
 }
@@ -45,12 +44,12 @@ void AlbumArt::updateArt(QNetworkReply *img)
     fitInView(pixmapItem);
 }
 
-void AlbumArt::resizeEvent(QResizeEvent* event)
+void AlbumArt::resizeEvent(QResizeEvent*)
 { 
     fitInView(pixmapItem);
 }
 
-void AlbumArt::mousePressEvent(QMouseEvent *)
+void AlbumArt::mousePressEvent(QMouseEvent*)
 {
     emit clickedOn();
 }

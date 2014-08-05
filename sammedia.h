@@ -23,7 +23,6 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QMediaMetaData>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QTimer>
 
 namespace SamMetaType
 {
@@ -69,6 +68,7 @@ private:
         int Year;
 
     };
+    bool hasData;
     SamExtraMetaData extraMeta;
     QUrl samMetaData;
 

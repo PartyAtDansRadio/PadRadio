@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -30,9 +30,28 @@
     <normaloff>:/PadImg</normaloff>:/PadImg</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">font: 666 14pt &quot;Cantarell&quot;;
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(50, 50, 50, 200), stop:1 rgba(150, 150, 150, 255));
-color:#FFFFFF;</string>
+   <string notr="true">#centralWidget {
+        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(50, 50, 50, 200), stop:1 rgba(150, 150, 150, 255));
+}
+QLabel, QPushButton, ScrollText {
+        font: 666 14pt &quot;Cantarell&quot;;
+        color:#FFFFFF;
+}
+QPushButton, QScrollBar {
+        background-color:#47A;
+}
+AlbumArt {
+        border: 15px solid #69C;
+        border-radius: 30px;
+        background-color: #69C;
+}
+#musicTitle {
+        font: 666 16pt &quot;Cantarell&quot;;
+}
+#musicTimeLeft {
+        border: 2px solid #69C;
+        background-color: #47A;
+}</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -46,6 +65,12 @@ color:#FFFFFF;</string>
       </property>
       <item alignment="Qt::AlignLeft">
        <widget class="QLabel" name="musicYear">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string>background-color: rgba(0, 0, 0, 0);</string>
         </property>
@@ -56,6 +81,12 @@ color:#FFFFFF;</string>
       </item>
       <item alignment="Qt::AlignLeft">
        <widget class="QLabel" name="typeSep">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string>background-color: rgba(0, 0, 0, 0);</string>
         </property>
@@ -65,12 +96,18 @@ color:#FFFFFF;</string>
        </widget>
       </item>
       <item alignment="Qt::AlignLeft">
-       <widget class="QLabel" name="musicType">
+       <widget class="QLabel" name="musicGenre">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string>background-color: rgba(0, 0, 0, 0);</string>
         </property>
         <property name="text">
-         <string>Type</string>
+         <string>Genre</string>
         </property>
        </widget>
       </item>
@@ -89,6 +126,12 @@ color:#FFFFFF;</string>
       </item>
       <item alignment="Qt::AlignLeft">
        <widget class="QLabel" name="noteListeners">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string>background-color: rgba(0, 0, 0, 0);</string>
         </property>
@@ -99,6 +142,12 @@ color:#FFFFFF;</string>
       </item>
       <item alignment="Qt::AlignLeft">
        <widget class="QLabel" name="musicListeners">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string>background-color: rgba(0, 0, 0, 0);</string>
         </property>
@@ -109,6 +158,12 @@ color:#FFFFFF;</string>
       </item>
       <item>
        <widget class="QLabel" name="ListenersSep">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string>background-color: rgba(0, 0, 0, 0);</string>
         </property>
@@ -119,6 +174,12 @@ color:#FFFFFF;</string>
       </item>
       <item>
        <widget class="QLabel" name="musicMaxListeners">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string>background-color: rgba(0, 0, 0, 0);</string>
         </property>
@@ -152,10 +213,7 @@ color:#FFFFFF;</string>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">border: 15px solid #69C;
-border-radius: 30px;
-background-color: #69C;
-</string>
+         <string notr="true"/>
         </property>
         <property name="verticalScrollBarPolicy">
          <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -241,8 +299,7 @@ background-color: #69C;
       <item alignment="Qt::AlignHCenter">
        <widget class="QLabel" name="musicTitle">
         <property name="styleSheet">
-         <string notr="true">background-color: rgba(0, 0, 0, 0);
-font: 666 16pt &quot;Cantarell&quot;;</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Title</string>
@@ -280,7 +337,7 @@ font: 666 16pt &quot;Cantarell&quot;;</string>
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>10</height>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -290,7 +347,7 @@ font: 666 16pt &quot;Cantarell&quot;;</string>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color:#47A;</string>
+         <string notr="true"/>
         </property>
         <property name="maximum">
          <number>1000</number>
@@ -311,12 +368,20 @@ font: 666 16pt &quot;Cantarell&quot;;</string>
       </item>
       <item>
        <widget class="QLabel" name="musicTimeLeft">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="styleSheet">
-         <string notr="true">border: 2px solid #69C;
-background-color: #47A;</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>00:00 / 00:00</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -380,7 +445,7 @@ background-color: #47A;</string>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color:#47A;</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Play</string>
@@ -408,7 +473,7 @@ background-color: #47A;</string>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color:#47A;</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Stop</string>
@@ -426,7 +491,7 @@ background-color: #47A;</string>
         <property name="minimumSize">
          <size>
           <width>150</width>
-          <height>15</height>
+          <height>35</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -436,7 +501,7 @@ background-color: #47A;</string>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color:#47A;</string>
+         <string notr="true"/>
         </property>
         <property name="maximum">
          <number>100</number>
@@ -516,7 +581,7 @@ background-color: #47A;</string>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgba(0, 0, 0, 0);</string>
+         <string notr="true"/>
         </property>
        </widget>
       </item>
@@ -528,11 +593,17 @@ background-color: #47A;</string>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="autoFillBackground">
          <bool>false</bool>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgba(0, 0, 0, 0);</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Party At Dans Radio&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;http://www.padradio.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#78cceb;&quot;&gt;www.padradio.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -561,10 +632,66 @@ background-color: #47A;</string>
      <x>0</x>
      <y>0</y>
      <width>550</width>
-     <height>32</height>
+     <height>21</height>
     </rect>
    </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QMenuBar {
+	background-color: #ededed;
+}</string>
+   </property>
+   <widget class="QMenu" name="menuHelp">
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="actionReport_Bug"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="tearOffEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionSettings"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <addaction name="menuTools"/>
+   <addaction name="menuHelp"/>
   </widget>
+  <action name="actionAbout">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionReport_Bug">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Report Bug</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

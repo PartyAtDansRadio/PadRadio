@@ -33,10 +33,10 @@ class AlbumArt : public QGraphicsView
 public:
     explicit AlbumArt(QWidget *parent = 0);
     void updateArt(QNetworkReply *img);
-    void updateArt(QString img = "");
+    void updateArt(QString img);
 
 protected:
-    void resizeEvent(QResizeEvent* event);
+    void resizeEvent(QResizeEvent*);
     void mousePressEvent(QMouseEvent*);
 
 private:

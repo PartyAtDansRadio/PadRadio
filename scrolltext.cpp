@@ -29,7 +29,7 @@ ScrollText::ScrollText(QWidget *parent) : QWidget(parent), scrollPos(0)
     setFixedHeight(fontMetrics().height());
     leftMargin = height() / 3;
     setSeparator("     ");
-    connect(&timer, SIGNAL(timeout()), this, SLOT(timer_timeout()));
+    connect(&timer, SIGNAL(timeout()), SLOT(timer_timeout()));
     timer.setInterval(50);
 }
 
@@ -135,7 +135,6 @@ void ScrollText::resizeEvent(QResizeEvent*)
     }
     else
         alphaChannel.fill(qRgb(0, 0, 0));
-
 
     //Update scrolling state
     bool newScrollEnabled = (singleTextWidth > width() - leftMargin);

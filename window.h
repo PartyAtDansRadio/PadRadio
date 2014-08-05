@@ -24,7 +24,13 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QTimer>
+#include <QDesktopServices>
+#include <QSystemTrayIcon>
+#include <QDesktopWidget>
+#include <QSettings>
 #include "sammedia.h"
+#include "about.h"
+#include "settings.h"
 
 namespace Ui
 {
@@ -45,8 +51,12 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
 private:
-    bool playing; //Temp var, need to find this value in mediaPlayer
     Ui::Window *ui;
+    QSettings *settings;
+    QSystemTrayIcon* systemTray;
+    QAction *buttonAction;
+    QAction *windowAction;
+    bool playing; //Temp var, need to find this value in mediaPlayer
     SamMedia *mediaPlayer;
     QTimer *timer;
 
@@ -54,9 +64,15 @@ private slots:
     void mainLoop();
     void updateImageReply(QNetworkReply* reply);
     void samDidMetaUpdate();
-    void fullscrean();
+    void showWindow();
+    void fullscreen();
+    void mediaButton_clicked();
     void on_playButton_clicked();
     void on_stopButton_clicked();
+    void on_actionReport_Bug_triggered();
+    void on_actionAbout_triggered();
+    void on_actionSettings_triggered();
+    void on_actionExit_triggered();
 };
 
 #endif // WINDOW_H

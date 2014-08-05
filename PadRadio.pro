@@ -18,18 +18,24 @@ SOURCES += main.cpp\
     window.cpp \
     $$PWD/scrolltext.cpp \
     $$PWD/albumart.cpp \
-    sammedia.cpp
+    sammedia.cpp \
+    about.cpp \
+    settings.cpp
 
 HEADERS += window.h \
     $$PWD/scrolltext.h \
     $$PWD/albumart.h \
-    sammedia.h
+    sammedia.h \
+    about.h \
+    settings.h
 
-FORMS   += window.ui
+FORMS   += window.ui \
+    about.ui \
+    settings.ui
 
-CONFIG  += mobility
+CONFIG  += mobility c++11
 
-MOBILITY = 
+MOBILITY += messaging
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 

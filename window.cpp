@@ -23,20 +23,45 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
 {
     //Setup UI
     ui->setupUi(this);
+    settings = new QSettings("Settings.ini", QSettings::IniFormat, this);
+    ui->graphicsView->updateArt(":/PadImg");
+    if(settings->value("rememberLocation").toBool())
+            restoreGeometry(settings->value("WindowGeometry").toByteArray());
 
-    //Init main loop
-    timer = new QTimer(this);
+    //Create taskbar icon
+    QMenu *trayIconMenu = new QMenu(this);
+    buttonAction = new QAction("Stop", this);
+    windowAction = new QAction(this);
+    if(isHidden())
+        windowAction->setText("Restore");
+    else
+        windowAction->setText("Minimize");
+    QAction *quitAction = new QAction("Exit", this);
+    trayIconMenu->addAction(buttonAction);
+    trayIconMenu->addAction(windowAction);
+    trayIconMenu->addSeparator();
+    trayIconMenu->addAction(quitAction);
+    trayIconMenu->setDefaultAction(quitAction);
+    systemTray = new QSystemTrayIcon(this);
+    systemTray->setIcon(QIcon(":/PadImg"));
+    systemTray->setContextMenu(trayIconMenu);
+    if(settings->value("showTaskbarIcon").toBool())
+        systemTray->show();
 
     //Setup media player
-    mediaPlayer = new SamMedia(QUrl("http://www.mcttelecom.com/~d_libby/metaData.txt"), this);
-    mediaPlayer->setMedia(QUrl("http://sc3.spacialnet.com:31560"));
+    mediaPlayer = new SamMedia(QUrl(settings->value("MetaData").toString()), this);
+    mediaPlayer->setMedia(QUrl(settings->value("MediaStream").toString()));
     mediaPlayer->setVolume(50);
 
     //Setup events
+    timer = new QTimer(this);
     connect(ui->volumeSlider, SIGNAL(valueChanged(int)), mediaPlayer, SLOT(setVolume(int)));
-    connect(timer, SIGNAL(timeout()), this, SLOT(mainLoop()));
-    connect(mediaPlayer, SIGNAL(samMetaDataChanged()), this, SLOT(samDidMetaUpdate()));
-    connect(ui->graphicsView, SIGNAL(clickedOn()), this, SLOT(fullscrean()));
+    connect(timer, SIGNAL(timeout()), SLOT(mainLoop()));
+    connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(samDidMetaUpdate()));
+    connect(ui->graphicsView, SIGNAL(clickedOn()), SLOT(fullscreen()));
+    connect(buttonAction, SIGNAL(triggered()), SLOT(mediaButton_clicked()));
+    connect(windowAction, SIGNAL(triggered()), SLOT(showWindow()));
+    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
 
 void Window::resizeEvent(QResizeEvent* event)
@@ -51,8 +76,12 @@ void Window::resizeEvent(QResizeEvent* event)
 void Window::keyPressEvent(QKeyEvent *event)
 {
     //Get key input events
-    if((isMaximized() || isFullScreen()) && event->key() == 16777216) { //ESC
+    if(event->key() == 16777313) { //Android Back Button
+        //parentWidget()->showMinimized(); //Need to fix this!!!
+    }
+    else if((isMaximized() || isFullScreen()) && event->key() == 16777216) { //ESC
         showNormal();
+        menuBar()->show();
     }
     else if(event->key()==32 || event->key()==16777220) { //Space & Enter
         if(playing) {
@@ -71,7 +100,7 @@ void Window::keyPressEvent(QKeyEvent *event)
 
 void Window::mainLoop()
 {
-    //Try to un all timed tasks
+    //Try to run all timed tasks
     QTime start = mediaPlayer->metaData(SamMetaType::MetaUpdateTime).toTime();
     QTime end = mediaPlayer->metaData(SamMetaType::Duration).toTime();
     QTime now = QTime::currentTime();
@@ -80,7 +109,8 @@ void Window::mainLoop()
     QString secs = QString::number((int)(toEnd/1000)%60);
     if(secs.length() == 1)
         secs = '0' + secs;
-    ui->musicTimeLeft->setText(QString::number((int)((toEnd/(1000*60))%60)) + ":" + secs +" / " + end.toString("m:ss"));
+    ui->musicTimeLeft->setText(QString::number((int)((toEnd/(1000*60))%60)) +
+                               ":" + secs + " / " + end.toString("m:ss"));
     ui->progressBar->setValue(((float)toEnd/(float)atEnd)*1000);
 }
 
@@ -88,7 +118,7 @@ void Window::updateImage(QUrl albumArt)
 {
     //Try to update current album art image by resource
     if(albumArt == QUrl()) {
-        ui->graphicsView->updateArt(albumArt.toString());
+        ui->graphicsView->updateArt(":/PadImg");
     }
     else {
         QNetworkAccessManager *manager = new QNetworkAccessManager(this);
@@ -105,7 +135,11 @@ void Window::updateImageReply(QNetworkReply* reply)
 
 void Window::samDidMetaUpdate()
 {
-    //Update the UI parts
+    //Update all UI parts
+    if(settings->value("showTaskbarIcon").toBool() && settings->value("showMessages").toBool() && !isActiveWindow())
+        systemTray->showMessage("PadRadio", "Playing " + mediaPlayer->metaData(SamMetaType::AlbumArtist).toString() +
+                                "'s \"" + mediaPlayer->metaData(SamMetaType::Title).toString() +
+                                "\" from " + mediaPlayer->metaData(SamMetaType::Title).toString() + ".");
     updateImage(mediaPlayer->metaData(SamMetaType::CoverArtImage).toUrl());
     ui->musicListeners->setText(mediaPlayer->metaData(SamMetaType::Listeners).toString());
     ui->musicMaxListeners->setText(mediaPlayer->metaData(SamMetaType::ListenersMax).toString());
@@ -113,12 +147,10 @@ void Window::samDidMetaUpdate()
     ui->musicAlbum->setText(mediaPlayer->metaData(SamMetaType::AlbumTitle).toString());
     ui->musicTitle->setText(mediaPlayer->metaData(SamMetaType::Title).toString());
     ui->musicYear->setText(mediaPlayer->metaData(SamMetaType::Year).toString());
-    ui->musicType->setText(mediaPlayer->metaData(SamMetaType::Genre).toString());
+    ui->musicGenre->setText(mediaPlayer->metaData(SamMetaType::Genre).toString());
     QString nextAlbumArtist = mediaPlayer->metaData(SamMetaType::NextAlbumArtist).toString();
     QString nextAlbumTitle = mediaPlayer->metaData(SamMetaType::NextAlbumTitle).toString();
     QString nextTitle = mediaPlayer->metaData(SamMetaType::NextTitle).toString();
-
-    //Update next song UI parts
     ui->nextSong->setText("Next up is " + nextAlbumArtist + "'s \"" + nextTitle + "\" from " + nextAlbumTitle + "...");
 
     //Try to start main loop
@@ -129,12 +161,42 @@ void Window::samDidMetaUpdate()
     }
 }
 
-void Window::fullscrean()
+void Window::showWindow()
 {
-    if(isFullScreen())
+    if(isHidden()) {
         showNormal();
-    else
+        windowAction->setText("Minimize");
+    }
+    else {
+        hide();
+        windowAction->setText("Restore");
+    }
+}
+
+void Window::fullscreen()
+{
+    //Show fullscreen if using a desktop OS
+    #if defined(Q_OS_WIN) || defined(Q_OS_OSX) || defined(Q_OS_LINUX)
+    if(isFullScreen()) {
+        showNormal();
+        menuBar()->show();
+    }
+    else {
         showFullScreen();
+        menuBar()->hide();
+    }
+    #endif
+}
+void Window::mediaButton_clicked()
+{
+    if(playing) {
+        on_stopButton_clicked();
+        buttonAction->setText("Play");
+    }
+    else {
+        on_playButton_clicked();
+        buttonAction->setText("Stop");
+    }
 }
 
 void Window::on_playButton_clicked()
@@ -150,6 +212,35 @@ void Window::on_stopButton_clicked()
 }
 
 Window::~Window()
-{
+{ 
+    //Try to save window geometry
+    if(settings->value("rememberLocation").toBool())
+        settings->setValue("WindowGeometry", saveGeometry());
+
+    //Delete window
+    settings->sync();
     delete ui;
+}
+
+void Window::on_actionReport_Bug_triggered()
+{
+    QString cmd = "mailto:partyatdans@gmail.com?subject=Bug Report " + QGuiApplication::applicationVersion();
+    QDesktopServices::openUrl(QUrl(cmd + " on " + qApp->platformName() + "&body=Please describe the problem:"));
+}
+
+void Window::on_actionAbout_triggered()
+{
+    About *aboutWindow = new About(this);
+    aboutWindow->show();
+}
+
+void Window::on_actionSettings_triggered()
+{
+    Settings *settingsWindow = new Settings(this);
+    settingsWindow->show();
+}
+
+void Window::on_actionExit_triggered()
+{
+    qApp->quit();
 }
