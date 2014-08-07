@@ -53,6 +53,10 @@ private slots:
     void on_resetRememberLocation_clicked();
     void on_resetAllButton_clicked();
 
+    void on_checkSmallPlayer_toggled(bool checked);
+
+    void on_resetSmallplayer_clicked();
+
 private:
     Ui::Settings *ui;
     QSettings *settings;

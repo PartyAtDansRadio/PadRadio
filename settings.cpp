@@ -51,6 +51,8 @@ Settings::Settings(QWidget *parent) :
         if(settings->value("startInTaskbar").toBool())
             ui->checkStartInTaskbar->toggle();
     }
+    if(settings->value("smallPlayer").toBool())
+        ui->checkSmallPlayer->toggle();
     if(settings->value("rememberLocation").toBool())
         ui->checkRememberLocation->toggle();
 }
@@ -67,6 +69,8 @@ void Settings::loadDefaults(QSettings *settings) {
         settings->setValue("MetaData", METADATA);
     if(!settings->contains("MediaStream"))
         settings->setValue("MediaStream", MEDIASTREAM);
+    if(!settings->contains("smallPlayer"))
+        settings->setValue("smallPlayer", false);
     if(!settings->contains("rememberLocation"))
         settings->setValue("rememberLocation", true);
 }
@@ -175,5 +179,17 @@ void Settings::on_resetAllButton_clicked()
     ui->checkEnableTaskbar->setChecked(true);
     ui->checkShowSong->setChecked(true);
     ui->checkStartInTaskbar->setChecked(false);
+    ui->checkSmallPlayer->setChecked(false);
     ui->checkRememberLocation->setChecked(true);
+}
+
+void Settings::on_checkSmallPlayer_toggled(bool checked)
+{
+    settings->setValue("smallPlayer", checked);
+}
+
+void Settings::on_resetSmallplayer_clicked()
+{
+    settings->setValue("smallPlayer", false);
+    ui->checkSmallPlayer->setChecked(false);
 }

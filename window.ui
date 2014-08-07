@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>650</height>
+    <height>621</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>550</width>
-    <height>650</height>
+    <height>300</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -33,6 +33,7 @@
    <string notr="true">#centralWidget {
         background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(50, 50, 50, 200), stop:1 rgba(150, 150, 150, 255));
 }
+
 QLabel, QPushButton, ScrollText {
         font: 666 14pt &quot;Cantarell&quot;;
         color:#FFFFFF;
@@ -45,13 +46,19 @@ AlbumArt {
         border-radius: 30px;
         background-color: #69C;
 }
-#musicTitle {
+#toolAlbumArt, #musicTitle {
         font: 666 16pt &quot;Cantarell&quot;;
 }
 #musicTimeLeft {
         border: 2px solid #69C;
         background-color: #47A;
-}</string>
+}
+
+#toolAlbumArt {
+		border: 15px solid #69C;
+        border-radius: 50px;
+        background-color: #69C;
+    }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -198,31 +205,35 @@ AlbumArt {
       <property name="bottomMargin">
        <number>10</number>
       </property>
-      <item alignment="Qt::AlignHCenter|Qt::AlignTop">
-       <widget class="AlbumArt" name="graphicsView">
+      <item>
+       <widget class="QToolButton" name="toolAlbumArt">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="maximumSize">
+        <property name="minimumSize">
          <size>
-          <width>16777215</width>
-          <height>16777215</height>
+          <width>250</width>
+          <height>250</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true"/>
+        <property name="text">
+         <string>Testing 123</string>
         </property>
-        <property name="verticalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOff</enum>
+        <property name="icon">
+         <iconset resource="Files.qrc">
+          <normaloff>:/PadImg</normaloff>:/PadImg</iconset>
         </property>
-        <property name="horizontalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOff</enum>
+        <property name="iconSize">
+         <size>
+          <width>250</width>
+          <height>250</height>
+         </size>
         </property>
-        <property name="renderHints">
-         <set>QPainter::Antialiasing|QPainter::HighQualityAntialiasing|QPainter::SmoothPixmapTransform|QPainter::TextAntialiasing</set>
+        <property name="autoRaise">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -632,7 +643,7 @@ AlbumArt {
      <x>0</x>
      <y>0</y>
      <width>550</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="autoFillBackground">
@@ -700,11 +711,6 @@ AlbumArt {
    <extends>QWidget</extends>
    <header location="global">scrolltext.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>AlbumArt</class>
-   <extends>QGraphicsView</extends>
-   <header location="global">albumart.h</header>
   </customwidget>
  </customwidgets>
  <resources>

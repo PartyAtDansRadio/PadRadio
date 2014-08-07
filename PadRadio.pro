@@ -17,14 +17,12 @@ INCLUDEPATH += $$PWD
 SOURCES += main.cpp\
     window.cpp \
     $$PWD/scrolltext.cpp \
-    $$PWD/albumart.cpp \
     sammedia.cpp \
     about.cpp \
     settings.cpp
 
 HEADERS += window.h \
     $$PWD/scrolltext.h \
-    $$PWD/albumart.h \
     sammedia.h \
     about.h \
     settings.h

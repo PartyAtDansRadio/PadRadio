@@ -24,9 +24,16 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     //Setup UI
     ui->setupUi(this);
     settings = new QSettings("Settings.ini", QSettings::IniFormat, this);
-    ui->graphicsView->updateArt(":/PadImg");
     if(settings->value("rememberLocation").toBool())
             restoreGeometry(settings->value("WindowGeometry").toByteArray());
+    if(settings->value("smallPlayer").toBool()) {
+        ui->toolAlbumArt->hide();
+        setMaximumHeight(300);
+        setMaximumWidth(minimumWidth());
+    }
+    else {
+        setMinimumHeight(610);
+    }
 
     //Create taskbar icon
     QMenu *trayIconMenu = new QMenu(this);
@@ -58,7 +65,6 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     connect(ui->volumeSlider, SIGNAL(valueChanged(int)), mediaPlayer, SLOT(setVolume(int)));
     connect(timer, SIGNAL(timeout()), SLOT(mainLoop()));
     connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(samDidMetaUpdate()));
-    connect(ui->graphicsView, SIGNAL(clickedOn()), SLOT(fullscreen()));
     connect(buttonAction, SIGNAL(triggered()), SLOT(mediaButton_clicked()));
     connect(windowAction, SIGNAL(triggered()), SLOT(showWindow()));
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -100,7 +106,10 @@ void Window::keyPressEvent(QKeyEvent *event)
 
 void Window::mainLoop()
 {
+
     //Try to run all timed tasks
+    if(ui->toolAlbumArt->iconSize() != QSize(ui->toolAlbumArt->height(), ui->toolAlbumArt->height()))
+        ui->toolAlbumArt->setIconSize(QSize(ui->toolAlbumArt->height(), ui->toolAlbumArt->height()));
     QTime start = mediaPlayer->metaData(SamMetaType::MetaUpdateTime).toTime();
     QTime end = mediaPlayer->metaData(SamMetaType::Duration).toTime();
     QTime now = QTime::currentTime();
@@ -118,7 +127,9 @@ void Window::updateImage(QUrl albumArt)
 {
     //Try to update current album art image by resource
     if(albumArt == QUrl()) {
-        ui->graphicsView->updateArt(":/PadImg");
+        QPixmap map;
+        map.load(":/PadImg");
+        ui->toolAlbumArt->setIcon(QIcon(map.scaled(1080, 1080, Qt::KeepAspectRatio)));
     }
     else {
         QNetworkAccessManager *manager = new QNetworkAccessManager(this);
@@ -129,8 +140,17 @@ void Window::updateImage(QUrl albumArt)
 
 void Window::updateImageReply(QNetworkReply* reply)
 {
-    //Set current album art image by network
-    ui->graphicsView->updateArt(reply);
+    //Try to set current album art image by network
+    if(reply->error() == reply->NoError) {
+        QPixmap map;
+        map.loadFromData(reply->readAll());
+        ui->toolAlbumArt->setIcon(QIcon(map.scaled(1080, 1080, Qt::KeepAspectRatio)));
+    }
+    else {
+        QPixmap map;
+        map.load(":/PadImg");
+        ui->toolAlbumArt->setIcon(QIcon(map.scaled(1080, 1080, Qt::KeepAspectRatio)));
+    }
 }
 
 void Window::samDidMetaUpdate()
@@ -173,20 +193,6 @@ void Window::showWindow()
     }
 }
 
-void Window::fullscreen()
-{
-    //Show fullscreen if using a desktop OS
-    #if defined(Q_OS_WIN) || defined(Q_OS_OSX) || defined(Q_OS_LINUX)
-    if(isFullScreen()) {
-        showNormal();
-        menuBar()->show();
-    }
-    else {
-        showFullScreen();
-        menuBar()->hide();
-    }
-    #endif
-}
 void Window::mediaButton_clicked()
 {
     if(playing) {
@@ -243,4 +249,19 @@ void Window::on_actionSettings_triggered()
 void Window::on_actionExit_triggered()
 {
     qApp->quit();
+}
+
+void Window::on_toolAlbumArt_clicked()
+{
+    //Show fullscreen if using a desktop OS
+    #if defined(Q_OS_WIN) || defined(Q_OS_OSX) || defined(Q_OS_LINUX)
+    if(isFullScreen()) {
+        showNormal();
+        menuBar()->show();
+    }
+    else {
+        showFullScreen();
+        menuBar()->hide();
+    }
+    #endif
 }

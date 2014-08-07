@@ -28,6 +28,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QSystemTrayIcon>
 #include <QDesktopWidget>
 #include <QSettings>
+#include <QResizeEvent>
 #include "sammedia.h"
 #include "about.h"
 #include "settings.h"
@@ -65,7 +66,6 @@ private slots:
     void updateImageReply(QNetworkReply* reply);
     void samDidMetaUpdate();
     void showWindow();
-    void fullscreen();
     void mediaButton_clicked();
     void on_playButton_clicked();
     void on_stopButton_clicked();
@@ -73,6 +73,7 @@ private slots:
     void on_actionAbout_triggered();
     void on_actionSettings_triggered();
     void on_actionExit_triggered();
+    void on_toolAlbumArt_clicked();
 };
 
 #endif // WINDOW_H
