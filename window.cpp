@@ -106,7 +106,6 @@ void Window::keyPressEvent(QKeyEvent *event)
 
 void Window::mainLoop()
 {
-
     //Try to run all timed tasks
     if(ui->toolAlbumArt->iconSize() != QSize(ui->toolAlbumArt->height(), ui->toolAlbumArt->height()))
         ui->toolAlbumArt->setIconSize(QSize(ui->toolAlbumArt->height(), ui->toolAlbumArt->height()));
@@ -159,7 +158,8 @@ void Window::samDidMetaUpdate()
     if(settings->value("showTaskbarIcon").toBool() && settings->value("showMessages").toBool() && !isActiveWindow())
         systemTray->showMessage("PadRadio", "Playing " + mediaPlayer->metaData(SamMetaType::AlbumArtist).toString() +
                                 "'s \"" + mediaPlayer->metaData(SamMetaType::Title).toString() +
-                                "\" from " + mediaPlayer->metaData(SamMetaType::Title).toString() + ".");
+                                "\" from " + mediaPlayer->metaData(SamMetaType::Title).toString() +
+                                ".", QSystemTrayIcon::Information, 30000);
     updateImage(mediaPlayer->metaData(SamMetaType::CoverArtImage).toUrl());
     ui->musicListeners->setText(mediaPlayer->metaData(SamMetaType::Listeners).toString());
     ui->musicMaxListeners->setText(mediaPlayer->metaData(SamMetaType::ListenersMax).toString());

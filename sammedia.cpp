@@ -17,12 +17,16 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
 #include "sammedia.h"
+//#include <QMediaPlayerControl> //I may need this for making a playlist...
 
 SamMedia::SamMedia(QUrl samMetaData, QObject *parent) :
     QMediaPlayer(parent, QMediaPlayer::StreamPlayback), samMetaData(samMetaData)
 {
-    hasData = false;
-    connect(this, SIGNAL(metaDataChanged()), SLOT(updateSamMetaData()));
+    doingUpdate = false;
+    hasData = false;    
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), SLOT(timeTriggerUpdate()));
+    timer->start(100);
 }
 
 QVariant SamMedia::metaData(QString &key) const
@@ -94,15 +98,41 @@ QStringList SamMedia::availableMetaData() const
         metaData.append("NextTitle");
         metaData.append("Title");
         metaData.append("Year");
+        for(QString item : QMediaPlayer::availableMetaData()) {
+            if(!metaData.contains(item))
+                metaData.append(item);
+        }
         return metaData;
     }
     return QMediaPlayer::availableMetaData();
+}
+
+void SamMedia::timeTriggerUpdate()
+{
+    //Try to update meta data by finding the start of the next song
+    if(!doingUpdate) {
+        QTime *zero = new QTime(0,0);
+        int playedAt = zero->secsTo(extraMeta.MetaUpdateTime);
+        int endTime = zero->secsTo(extraMeta.Duration);
+        int thisTime = zero->secsTo(QTime::currentTime());
+        if(thisTime >= playedAt + endTime) {
+            updateSamMetaData();
+            timer->setInterval(100);
+        }
+        else {
+            timer->setInterval(endTime*1000 - (thisTime*1000 - playedAt*1000));
+        }
+    }
+    else {
+        timer->setInterval(100);
+    }
 }
 
 void SamMedia::updateSamMetaData()
 {
     //Update music info
     qDebug() << "Trying to Update Sam MetaData...";
+    doingUpdate = true;
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     connect(manager, SIGNAL(finished(QNetworkReply*)), SLOT(samMetaDataReply(QNetworkReply*)));
     manager->get(QNetworkRequest(samMetaData));
@@ -118,7 +148,7 @@ void SamMedia::samMetaDataReply(QNetworkReply* reply)
             qDebug() << "Doing Sam MetaData Update.";
             extraMeta.AlbumArtist = rawData[0];
             extraMeta.AlbumTitle = rawData[1];
-            if(rawData[2] == "http://www.mcttelecom.com/~d_libby/pictures/")
+            if(rawData[2].right(1) == "/")
                 extraMeta.CoverArtImage = QUrl("");
             else
                 extraMeta.CoverArtImage = QUrl(rawData[2]);
@@ -133,11 +163,17 @@ void SamMedia::samMetaDataReply(QNetworkReply* reply)
             extraMeta.Title = rawData[11];
             extraMeta.Year = rawData[12].toInt();
             hasData = true;
+            qDebug() << "Got:" << availableMetaData();
             emit samMetaDataChanged();
-       }
+        }
+        else {
+            qDebug() << "MetaData is already up to date!";
+        }
     }
     else {
         qDebug() << "Sam MetaData Not Found!";
         hasData = false;
+        timer->setInterval(100);
     }
+    doingUpdate = false;
 }

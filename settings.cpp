@@ -30,9 +30,9 @@ Settings::Settings(QWidget *parent) :
     setWindowFlags(Qt::Popup);
     setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter,
                                     size(), qApp->desktop()->availableGeometry()));
-    //#if !defined(Q_OS_WIN) && !defined(Q_OS_OSX) && !defined(Q_OS_LINUX)
-        //ui->tabWidget->removeTab(0); //Window tab
-    //#endif
+    #if !defined(Q_OS_WIN) && !defined(Q_OS_OSX) && !defined(Q_OS_LINUX)
+        ui->tabWidget->removeTab(0); //Window tab
+    #endif
 
     //Load Settings
     settings = new QSettings("Settings.ini", QSettings::IniFormat, this);

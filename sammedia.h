@@ -23,6 +23,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QMediaMetaData>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QTimer>
 
 namespace SamMetaType
 {
@@ -69,6 +70,8 @@ private:
 
     };
     bool hasData;
+    bool doingUpdate;
+    QTimer *timer;
     SamExtraMetaData extraMeta;
     QUrl samMetaData;
 
@@ -76,6 +79,7 @@ signals:
     void samMetaDataChanged();
 
 private slots:
+    void timeTriggerUpdate();
     void samMetaDataReply(QNetworkReply* reply);
 
 public slots:
