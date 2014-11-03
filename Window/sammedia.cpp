@@ -145,7 +145,7 @@ void SamMedia::samMetaDataReply(QNetworkReply* reply)
         QList<QString> rawData = QList<QString>(((QString)reply->readAll()).split("\r\n"));
         QTime updateTime = QTime::fromString(rawData[7], "h:mm:ss ap");
         if(extraMeta.MetaUpdateTime.toString() != updateTime.toString()) {
-            qDebug() << "Doing Sam MetaData Update.";
+            qDebug() << "Found Sam MetaData Update...";
             extraMeta.AlbumArtist = rawData[0];
             extraMeta.AlbumTitle = rawData[1];
             if(rawData[2].right(1) == "/")

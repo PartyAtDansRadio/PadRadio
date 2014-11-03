@@ -16,30 +16,18 @@ along with PadRadio. If not, see <http://www.gnu.org/licenses/>.
 See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
-#ifndef ABOUT_H
-#define ABOUT_H
+#ifndef DIVSETTING_H
+#define DIVSETTING_H
 
 #include <QWidget>
-#include <QStyle>
-#include <QDesktopWidget>
+#include <QHBoxLayout>
+#include <QLabel>
 
-namespace Ui {
-    class About;
-}
-
-class About : public QWidget
+class DivSetting : public QFrame
 {
     Q_OBJECT
-
-public:
-    explicit About(QWidget *parent = 0);
-    ~About();
-
-private slots:
-    void on_closeButton_clicked();
-
-private:
-    Ui::About *ui;
+    public:
+        explicit DivSetting(QString note, QWidget *parent = 0);
 };
 
-#endif // ABOUT_H
+#endif // DIVSETTING_H

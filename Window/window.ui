@@ -26,39 +26,11 @@
    <string>Party At Dans Radio</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="Files.qrc">
+   <iconset resource="../Files.qrc">
     <normaloff>:/PadImg</normaloff>:/PadImg</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">#centralWidget {
-        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(50, 50, 50, 200), stop:1 rgba(150, 150, 150, 255));
-}
-
-QLabel, QPushButton, ScrollText {
-        font: 666 14pt &quot;Cantarell&quot;;
-        color:#FFFFFF;
-}
-QPushButton, QScrollBar {
-        background-color:#47A;
-}
-AlbumArt {
-        border: 15px solid #69C;
-        border-radius: 30px;
-        background-color: #69C;
-}
-#toolAlbumArt, #musicTitle {
-        font: 666 16pt &quot;Cantarell&quot;;
-}
-#musicTimeLeft {
-        border: 2px solid #69C;
-        background-color: #47A;
-}
-
-#toolAlbumArt {
-		border: 15px solid #69C;
-        border-radius: 50px;
-        background-color: #69C;
-    }</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -223,7 +195,7 @@ AlbumArt {
          <string>Testing 123</string>
         </property>
         <property name="icon">
-         <iconset resource="Files.qrc">
+         <iconset resource="../Files.qrc">
           <normaloff>:/PadImg</normaloff>:/PadImg</iconset>
         </property>
         <property name="iconSize">
@@ -461,33 +433,11 @@ AlbumArt {
         <property name="text">
          <string>Play</string>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="stopButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>150</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string>Stop</string>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -599,7 +549,7 @@ AlbumArt {
       <item alignment="Qt::AlignRight">
        <widget class="QLabel" name="webSite">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -643,7 +593,7 @@ AlbumArt {
      <x>0</x>
      <y>0</y>
      <width>550</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="autoFillBackground">
@@ -709,12 +659,12 @@ AlbumArt {
   <customwidget>
    <class>ScrollText</class>
    <extends>QWidget</extends>
-   <header location="global">scrolltext.h</header>
+   <header location="global">Window/scrolltext.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="Files.qrc"/>
+  <include location="../Files.qrc"/>
  </resources>
  <connections/>
 </ui>

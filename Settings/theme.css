@@ -1,0 +1,27 @@
+Settings {
+    border: 3px solid #47A;
+}
+
+Settings, #scrollZone {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(50, 50, 50, 255));
+}
+
+Settings > QLabel, DivSetting  > QLabel, QPushButton {
+    font: 666 14pt "Cantarell";
+}
+
+BoolSetting  > QLabel, TextSetting > QLabel, TextSetting > QLineEdit {
+    font: 666 10pt "Cantarell";
+}
+
+BoolSetting, DivSetting, TextSetting {
+    background-color: rgba(102, 153, 204, 75);
+}
+
+QLabel, QPushButton, QTextEdit {
+    color:#FFFFFF;
+}
+
+QPushButton, TextSetting > QTextEdit {
+    background-color:#47A;
+}

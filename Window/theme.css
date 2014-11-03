@@ -1,0 +1,30 @@
+QLabel, QPushButton, ScrollText {
+    font: 666 14pt "Cantarell";
+    color:#FFFFFF;
+}
+QPushButton, QScrollBar {
+    background-color:#47A;
+}
+AlbumArt {
+    border: 15px solid #69C;
+    border-radius: 30px;
+    background-color: #69C;
+}
+
+#centralWidget {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(50, 50, 50, 200), stop:1 rgba(150, 150, 150, 255));
+}
+
+#toolAlbumArt, #musicTitle {
+    font: 666 16pt "Cantarell";
+}
+#musicTimeLeft {
+    border: 2px solid #69C;
+    background-color: #47A;
+}
+
+#toolAlbumArt {
+    border: 15px solid #69C;
+    border-radius: 50px;
+    background-color: #69C;
+}

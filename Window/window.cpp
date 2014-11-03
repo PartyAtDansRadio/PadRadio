@@ -18,12 +18,14 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 
 #include "window.h"
 #include "ui_window.h"
+#include <QScreen>
 
 Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
 {
     //Setup UI
     ui->setupUi(this);
     settings = new QSettings("Settings.ini", QSettings::IniFormat, this);
+    this->setWindowFlags(Qt::WindowStaysOnTopHint);
     if(settings->value("rememberLocation").toBool())
             restoreGeometry(settings->value("WindowGeometry").toByteArray());
     if(settings->value("smallPlayer").toBool()) {
@@ -35,11 +37,17 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
         setMinimumHeight(610);
     }
 
+    //Theme ui
+    QFile file(":/WindowTheme");
+    file.open(QFile::ReadOnly | QFile::Text);
+    QTextStream input(&file);
+    setStyleSheet(input.readAll());
+
     //Create taskbar icon
     QMenu *trayIconMenu = new QMenu(this);
     buttonAction = new QAction("Stop", this);
     windowAction = new QAction(this);
-    if(isHidden())
+    if(!isHidden())
         windowAction->setText("Restore");
     else
         windowAction->setText("Minimize");
@@ -65,7 +73,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     connect(ui->volumeSlider, SIGNAL(valueChanged(int)), mediaPlayer, SLOT(setVolume(int)));
     connect(timer, SIGNAL(timeout()), SLOT(mainLoop()));
     connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(samDidMetaUpdate()));
-    connect(buttonAction, SIGNAL(triggered()), SLOT(mediaButton_clicked()));
+    connect(buttonAction, SIGNAL(triggered()), SLOT(mediaButton_clicked())); //This one needs fixing
     connect(windowAction, SIGNAL(triggered()), SLOT(showWindow()));
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
@@ -73,10 +81,12 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
 void Window::resizeEvent(QResizeEvent* event)
 {
     //Resize widgets for better display
+    QScreen *i = QApplication::screens().at(0);
+    qDebug() << i->devicePixelRatio() << qApp->desktop()->logicalDpiX();
+
     ui->progressBar->setMinimumWidth(event->size().width()*0.90*0.75);
-    ui->volumeSlider->setMinimumWidth(event->size().width()*0.3333*0.75);
-    ui->playButton->setMinimumWidth(event->size().width()*0.3333*0.75);
-    ui->stopButton->setMinimumWidth(event->size().width()*0.3333*0.75);
+    ui->volumeSlider->setMinimumWidth(event->size().width()*0.50*0.75);
+    ui->playButton->setMinimumWidth(event->size().width()*0.50*0.75);
 }
 
 void Window::keyPressEvent(QKeyEvent *event)
@@ -91,12 +101,13 @@ void Window::keyPressEvent(QKeyEvent *event)
     }
     else if(event->key()==32 || event->key()==16777220) { //Space & Enter
         if(playing) {
-            playing = false;
-            mediaPlayer->stop();
+            ui->playButton->toggled(false);
+            ui->playButton->setChecked(false);
+
         }
         else {
-            playing = true;
-            mediaPlayer->play();
+            ui->playButton->toggled(true);
+            ui->playButton->setChecked(true);
         }
     }
     else {
@@ -175,8 +186,8 @@ void Window::samDidMetaUpdate()
 
     //Try to start main loop
     if(!timer->isActive()) {
-        playing = true;
-        mediaPlayer->play();
+        ui->playButton->toggled(true);
+        ui->playButton->setChecked(true);
         timer->start(50);
     }
 }
@@ -191,30 +202,6 @@ void Window::showWindow()
         hide();
         windowAction->setText("Restore");
     }
-}
-
-void Window::mediaButton_clicked()
-{
-    if(playing) {
-        on_stopButton_clicked();
-        buttonAction->setText("Play");
-    }
-    else {
-        on_playButton_clicked();
-        buttonAction->setText("Stop");
-    }
-}
-
-void Window::on_playButton_clicked()
-{
-    playing = true;
-    mediaPlayer->play();
-}
-
-void Window::on_stopButton_clicked()
-{
-    playing = false;
-    mediaPlayer->stop();
 }
 
 Window::~Window()
@@ -242,7 +229,7 @@ void Window::on_actionAbout_triggered()
 
 void Window::on_actionSettings_triggered()
 {
-    Settings *settingsWindow = new Settings(this);
+    Settings *settingsWindow = new Settings();
     settingsWindow->show();
 }
 
@@ -264,4 +251,17 @@ void Window::on_toolAlbumArt_clicked()
         menuBar()->hide();
     }
     #endif
+}
+
+void Window::on_playButton_toggled(bool checked)
+{
+    playing = checked;
+    if(checked) {
+        ui->playButton->setText("Stop");
+        mediaPlayer->play();
+    }
+    else {
+        ui->playButton->setText("Play");
+        mediaPlayer->stop();
+    }
 }

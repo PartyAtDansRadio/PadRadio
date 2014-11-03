@@ -30,8 +30,8 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QSettings>
 #include <QResizeEvent>
 #include "sammedia.h"
-#include "about.h"
-#include "settings.h"
+#include "../About/about.h"
+#include "../Settings/settings.h"
 
 namespace Ui
 {
@@ -66,14 +66,12 @@ private slots:
     void updateImageReply(QNetworkReply* reply);
     void samDidMetaUpdate();
     void showWindow();
-    void mediaButton_clicked();
-    void on_playButton_clicked();
-    void on_stopButton_clicked();
     void on_actionReport_Bug_triggered();
     void on_actionAbout_triggered();
     void on_actionSettings_triggered();
     void on_actionExit_triggered();
     void on_toolAlbumArt_clicked();
+    void on_playButton_toggled(bool checked);
 };
 
 #endif // WINDOW_H

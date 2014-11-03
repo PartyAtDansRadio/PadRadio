@@ -1,7 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="PadImg">padLogo.png</file>
-        <file alias="CheckChecked">checkboxChecked.png</file>
-        <file alias="CheckUnchecked">checkboxUnchecked.png</file>
+	<file alias="WindowTheme">Window/theme.css</file>
+	<file alias="SettingsTheme">Settings/theme.css</file>
+	<file alias="AboutTheme">About/theme.css</file>
+        <file alias="PadImg">Window/padLogo.png</file>
+        <file alias="CheckChecked">Settings/checkboxChecked.png</file>
+        <file alias="CheckUnchecked">Settings/checkboxUnchecked.png</file>
     </qresource>
 </RCC>

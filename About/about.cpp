@@ -30,6 +30,12 @@ About::About(QWidget *parent) : QWidget(parent), ui(new Ui::About)
                                     size(), qApp->desktop()->availableGeometry()));
     ui->title->setText("About: " + QApplication::organizationName() +
                        " " + QGuiApplication::applicationVersion());
+
+    //Theme ui
+    QFile file(":/AboutTheme");
+    file.open(QFile::ReadOnly | QFile::Text);
+    QTextStream input(&file);
+    setStyleSheet(input.readAll());
 }
 
 void About::on_closeButton_clicked()

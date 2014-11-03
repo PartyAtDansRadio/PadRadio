@@ -12,26 +12,29 @@ TARGET = PadRadio
 
 TEMPLATE = app
 
-INCLUDEPATH += $$PWD
-
 SOURCES += main.cpp\
-    window.cpp \
-    $$PWD/scrolltext.cpp \
-    sammedia.cpp \
-    about.cpp \
-    settings.cpp
+    Window/window.cpp \
+    Window/scrolltext.cpp \
+    Window/sammedia.cpp \
+    About/about.cpp \
+    Settings/settings.cpp \
+    Settings/boolsetting.cpp \
+    Settings/textsetting.cpp \
+    Settings/divsetting.cpp
 
-HEADERS += window.h \
-    $$PWD/scrolltext.h \
-    sammedia.h \
-    about.h \
-    settings.h
+HEADERS += Window/window.h \
+    Window/scrolltext.h \
+    Window/sammedia.h \
+    About/about.h \
+    Settings/settings.h \
+    Settings/boolsetting.h \
+    Settings/textsetting.h \
+    Settings/divsetting.h
 
-FORMS   += window.ui \
-    about.ui \
-    settings.ui
+FORMS += Window/window.ui \
+    About/about.ui
 
-CONFIG  += mobility c++11
+CONFIG += mobility c++11
 
 MOBILITY += messaging
 

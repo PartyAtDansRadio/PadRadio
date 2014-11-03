@@ -16,25 +16,31 @@ along with PadRadio. If not, see <http://www.gnu.org/licenses/>.
 See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
-#include <QApplication>
-#include <QSettings>
-#include "Window/window.h"
-#include "Settings/settings.h"
+#ifndef TEXTSETTING_H
+#define TEXTSETTING_H
 
-int main(int argc, char *argv[])
+#include <QWidget>
+#include <QLineEdit>
+#include <QHBoxLayout>
+#include <QToolButton>
+#include <QLabel>
+
+class TextSetting : public QFrame
 {
-    //Create app
-    QApplication app(argc, argv);
-    app.setApplicationName("PadRadio");
-    app.setApplicationVersion("0.2");
-    app.setOrganizationName("Party at Dan's Radio");
-    app.setOrganizationDomain("http://padradio.com");
+    Q_OBJECT
+    public:
+        explicit TextSetting(QString note, QString value="", QWidget *parent=0);
+        QString getValue();
+    private:
+        QString valueDefault;
+        QLabel *titleText;
+        QLineEdit *valueText;
+        QToolButton *boolReset;
+    signals:
+        void newValue(QString value);
+    public slots:
+        void setValue(QString value);
+        void resetValue();
+};
 
-    //Run app
-    Window window;
-    QSettings *settings = new QSettings("Settings.ini", QSettings::IniFormat);
-    Settings::loadDefaults(settings);
-    if(!(settings->value("showTaskbarIcon").toBool() && settings->value("startInTaskbar").toBool()))
-        window.show();
-    return app.exec();
-}
+#endif // TEXTSETTING_H
