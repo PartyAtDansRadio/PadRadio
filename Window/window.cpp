@@ -24,7 +24,8 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     //Setup UI
     ui->setupUi(this);
     settings = new QSettings("Settings.ini", QSettings::IniFormat, this);
-    this->setWindowFlags(Qt::WindowStaysOnTopHint);
+    if(settings->value("alwaysTop").toBool())
+        setWindowFlags(Qt::WindowStaysOnTopHint);
     if(settings->value("rememberLocation").toBool())
             restoreGeometry(settings->value("WindowGeometry").toByteArray());
     if(settings->value("smallPlayer").toBool()) {
@@ -78,7 +79,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     connect(ui->volumeSlider, SIGNAL(valueChanged(int)), mediaPlayer, SLOT(setVolume(int)));
     connect(timer, SIGNAL(timeout()), SLOT(mainLoop()));
     connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(samDidMetaUpdate()));
-    connect(buttonAction, SIGNAL(triggered()), SLOT(mediaButton_clicked())); //This one needs fixing
+    //connect(buttonAction, SIGNAL(triggered()), SLOT(mediaButton_clicked())); //This one needs fixing (taskbar play/stop)
     connect(windowAction, SIGNAL(triggered()), SLOT(showWindow()));
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
@@ -86,8 +87,9 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
 void Window::resizeEvent(QResizeEvent* event)
 {
     //Resize widgets for better display
-    QScreen *i = QApplication::screens().at(0);
-    qDebug() << i->devicePixelRatio() << qApp->desktop()->logicalDpiX();
+
+    //QScreen *i = QApplication::screens().at(0);
+    //qDebug() << i->devicePixelRatio() << qApp->desktop()->logicalDpiX();
 
     ui->progressBar->setMinimumWidth(event->size().width()*0.90*0.75);
     ui->volumeSlider->setMinimumWidth(event->size().width()*0.50*0.75);

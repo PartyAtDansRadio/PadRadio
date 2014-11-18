@@ -31,9 +31,9 @@ int main(int argc, char *argv[])
     app.setOrganizationDomain("http://padradio.com");
 
     //Run app
-    Window window;
     QSettings *settings = new QSettings("Settings.ini", QSettings::IniFormat);
     Settings::loadDefaults(settings);
+    Window window;
     if(!(settings->value("showTaskbarIcon").toBool() && settings->value("startInTaskbar").toBool()))
         window.show();
     return app.exec();
