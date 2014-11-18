@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../Files.qrc">
-    <normaloff>:/PadImg</normaloff>:/PadImg</iconset>
+    <normaloff>:/Window/PadLogo</normaloff>:/Window/PadLogo</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -195,7 +195,7 @@
          <string>Testing 123</string>
         </property>
         <property name="icon">
-         <iconset resource="../Files.qrc">
+         <iconset>
           <normaloff>:/PadImg</normaloff>:/PadImg</iconset>
         </property>
         <property name="iconSize">
@@ -659,7 +659,7 @@
   <customwidget>
    <class>ScrollText</class>
    <extends>QWidget</extends>
-   <header location="global">Window/scrolltext.h</header>
+   <header>scrolltext.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

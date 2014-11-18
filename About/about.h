@@ -19,29 +19,24 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #ifndef ABOUT_H
 #define ABOUT_H
 
-#include <QWidget>
+#include <QFrame>
 #include <QStyle>
+#include <QScreen>
+#include <QApplication>
 #include <QDesktopWidget>
+#include <QVBoxLayout>
 #include <QFile>
 #include <QTextStream>
+#include <QPushButton>
+#include <QTextEdit>
 
-namespace Ui {
-    class About;
-}
-
-class About : public QWidget
+class About : public QFrame
 {
-    Q_OBJECT
-
-public:
-    explicit About(QWidget *parent = 0);
-    ~About();
-
-private slots:
-    void on_closeButton_clicked();
-
-private:
-    Ui::About *ui;
+    Q_OBJECT 
+    public:
+        explicit About(QWidget *parent = 0);
+    private slots:
+        void closeButton_clicked();
 };
 
 #endif // ABOUT_H

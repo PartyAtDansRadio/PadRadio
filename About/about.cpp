@@ -17,33 +17,45 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
 #include "about.h"
-#include "ui_about.h"
 
-About::About(QWidget *parent) : QWidget(parent), ui(new Ui::About)
+About::About(QWidget *parent) : QFrame(parent)
 {
-    //Setup UI
-    ui->setupUi(this);
-    setWindowFlags(Qt::Popup);
-    if(width() > qApp->desktop()->availableGeometry().width())
-        resize(qApp->desktop()->availableGeometry().width(), height());
+    //Set window type and location
+    setWindowTitle("Party At Dans Radio");
+    setMaximumWidth(425);
+    setMaximumHeight(300);
+    setMinimumWidth(maximumWidth());
+    setMinimumHeight(maximumHeight());
+    QScreen *screen = QApplication::screens().at(0);
     setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter,
-                                    size(), qApp->desktop()->availableGeometry()));
-    ui->title->setText("About: " + QApplication::organizationName() +
-                       " " + QGuiApplication::applicationVersion());
+                                    size(), screen->availableGeometry()));
 
     //Theme ui
-    QFile file(":/AboutTheme");
-    file.open(QFile::ReadOnly | QFile::Text);
-    QTextStream input(&file);
-    setStyleSheet(input.readAll());
+    QFile theme(":/About/Theme");
+    theme.open(QFile::ReadOnly | QFile::Text);
+    QTextStream themeInput(&theme);
+    setStyleSheet(themeInput.readAll());
+    theme.close();
+
+    //Setup widgets
+    QTextEdit *textZone = new QTextEdit(this);
+    textZone->setReadOnly(true);
+    QPushButton *close = new QPushButton("Close Window", this);
+    connect(close, SIGNAL(clicked()), SLOT(closeButton_clicked()));
+    QVBoxLayout *holder = new QVBoxLayout(this);
+    holder->addWidget(textZone);
+    holder->addWidget(close);
+    setLayout(holder);
+
+    //Set textedit html file
+    QFile html(":/About/Note");
+    html.open(QFile::ReadOnly | QFile::Text);
+    QTextStream htmlInput(&html);
+    textZone->setHtml(htmlInput.readAll());
+    html.close();
 }
 
-void About::on_closeButton_clicked()
+void About::closeButton_clicked()
 {
    this->destroy();
-}
-
-About::~About()
-{
-    delete ui;
 }

@@ -31,8 +31,7 @@ HEADERS += Window/window.h \
     Settings/textsetting.h \
     Settings/divsetting.h
 
-FORMS += Window/window.ui \
-    About/about.ui
+FORMS += Window/window.ui
 
 CONFIG += mobility c++11
 

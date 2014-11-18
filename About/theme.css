@@ -6,7 +6,7 @@ About, QTextEdit {
 }
 
 QWidget {
-    font: 666 14pt "Cantarell";
+    font: 666 12pt "Cantarell";
 }
 
 QLabel, QPushButton, QTextEdit {

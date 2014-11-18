@@ -55,9 +55,9 @@ bool BoolSetting::getEnabled()
 void BoolSetting::setChecked(bool checked)
 {
     if(checked)
-        boolBox->setIcon(QIcon(":/CheckChecked"));
+        boolBox->setIcon(QIcon(":/Settings/CheckChecked"));
     else
-        boolBox->setIcon(QIcon(":/CheckUnchecked"));
+        boolBox->setIcon(QIcon(":/Settings/CheckUnchecked"));
     boolBox->setChecked(checked);
     this->checked = checked;
     emit newValue(checked);

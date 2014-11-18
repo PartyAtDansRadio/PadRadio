@@ -18,7 +18,6 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 
 #include "window.h"
 #include "ui_window.h"
-#include <QScreen>
 
 Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
 {
@@ -38,10 +37,16 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     }
 
     //Theme ui
-    QFile file(":/WindowTheme");
-    file.open(QFile::ReadOnly | QFile::Text);
-    QTextStream input(&file);
-    setStyleSheet(input.readAll());
+    updateImage();
+    QFile theme(":/Window/Theme");
+    theme.open(QFile::ReadOnly | QFile::Text);
+    QTextStream themeInput(&theme);
+    setStyleSheet(themeInput.readAll());
+    theme.close();
+
+    //Setup other windows
+    aboutWindow = new About();
+    settingsWindow = new Settings();
 
     //Create taskbar icon
     QMenu *trayIconMenu = new QMenu(this);
@@ -58,7 +63,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     trayIconMenu->addAction(quitAction);
     trayIconMenu->setDefaultAction(quitAction);
     systemTray = new QSystemTrayIcon(this);
-    systemTray->setIcon(QIcon(":/PadImg"));
+    systemTray->setIcon(QIcon(":/Window/PadLogo"));
     systemTray->setContextMenu(trayIconMenu);
     if(settings->value("showTaskbarIcon").toBool())
         systemTray->show();
@@ -138,7 +143,7 @@ void Window::updateImage(QUrl albumArt)
     //Try to update current album art image by resource
     if(albumArt == QUrl()) {
         QPixmap map;
-        map.load(":/PadImg");
+        map.load(":/Window/PadLogo");
         ui->toolAlbumArt->setIcon(QIcon(map.scaled(1080, 1080, Qt::KeepAspectRatio)));
     }
     else {
@@ -158,7 +163,7 @@ void Window::updateImageReply(QNetworkReply* reply)
     }
     else {
         QPixmap map;
-        map.load(":/PadImg");
+        map.load(":/Window/PadLogo");
         ui->toolAlbumArt->setIcon(QIcon(map.scaled(1080, 1080, Qt::KeepAspectRatio)));
     }
 }
@@ -223,13 +228,11 @@ void Window::on_actionReport_Bug_triggered()
 
 void Window::on_actionAbout_triggered()
 {
-    About *aboutWindow = new About(this);
     aboutWindow->show();
 }
 
 void Window::on_actionSettings_triggered()
-{
-    Settings *settingsWindow = new Settings();
+{    
     settingsWindow->show();
 }
 

@@ -23,12 +23,13 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QStyle>
 #include <QDesktopWidget>
 #include <QSettings>
-#include <QTabWidget>
 #include <QScrollArea>
 #include <QScreen>
 #include <QApplication>
 #include <QFile>
 #include <QTextStream>
+#include <QPushButton>
+
 #include "boolsetting.h"
 #include "textsetting.h"
 #include "divsetting.h"

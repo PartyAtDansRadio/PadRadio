@@ -28,7 +28,10 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QSystemTrayIcon>
 #include <QDesktopWidget>
 #include <QSettings>
+#include <QScreen>
 #include <QResizeEvent>
+
+//#include "scrolltext.h" //Need this for later
 #include "sammedia.h"
 #include "../About/about.h"
 #include "../Settings/settings.h"
@@ -53,11 +56,13 @@ protected:
 
 private:
     Ui::Window *ui;
+    About *aboutWindow;
+    Settings *settingsWindow;
     QSettings *settings;
     QSystemTrayIcon* systemTray;
     QAction *buttonAction;
     QAction *windowAction;
-    bool playing; //Temp var, need to find this value in mediaPlayer
+    bool playing; //Temp var, need to find or add this value in mediaPlayer
     SamMedia *mediaPlayer;
     QTimer *timer;
 

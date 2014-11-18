@@ -111,7 +111,7 @@ void SamMedia::timeTriggerUpdate()
 {
     //Try to update meta data by finding the start of the next song
     if(!doingUpdate) {
-        QTime *zero = new QTime(0,0);
+        QTime *zero = new QTime(0, 0);
         int playedAt = zero->secsTo(extraMeta.MetaUpdateTime);
         int endTime = zero->secsTo(extraMeta.Duration);
         int thisTime = zero->secsTo(QTime::currentTime());

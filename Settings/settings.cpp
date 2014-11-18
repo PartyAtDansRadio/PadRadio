@@ -17,7 +17,6 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
 #include "settings.h"
-#include <QPushButton>
 
 #define MEDIASTREAM "http://sc3.spacialnet.com:31560"
 #define METADATA "http://www.mcttelecom.com/~d_libby/metaData.txt"
@@ -25,10 +24,11 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 Settings::Settings(QWidget *parent) : QFrame(parent)
 {
     //Theme ui
-    QFile file(":/SettingsTheme");
-    file.open(QFile::ReadOnly | QFile::Text);
-    QTextStream input(&file);
-    setStyleSheet(input.readAll());
+    QFile theme(":/Settings/Theme");
+    theme.open(QFile::ReadOnly | QFile::Text);
+    QTextStream themeInput(&theme);
+    setStyleSheet(themeInput.readAll());
+    theme.close();
 
     //Setup widgets
     QLabel *title = new QLabel("Party At Dans Settings", this);
