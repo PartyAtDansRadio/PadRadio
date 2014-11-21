@@ -3,6 +3,7 @@
 
 	<file alias="Window/Theme">Window/theme.css</file>
         <file alias="Window/PadLogo">Window/padLogo.png</file>
+	<file alias="Window/ServerLink">Window/serverLink.html</file>
 
 	<file alias="Settings/Theme">Settings/theme.css</file>
         <file alias="Settings/CheckChecked">Settings/checkboxChecked.png</file>

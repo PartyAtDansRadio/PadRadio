@@ -16,7 +16,7 @@ along with PadRadio. If not, see <http://www.gnu.org/licenses/>.
 See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 
 NOTE:
-    This class scrolltext is the work of Sebastian Lehmann and was found at
+    This class scrolltext is mostly the work of Sebastian Lehmann and was found at
     https://stackoverflow.com/questions/10651514/text-scrolling-marquee-in-qlabel
     from 2012 under the Stackoverflow username Leemes.
 */
@@ -90,7 +90,7 @@ void ScrollText::paintEvent(QPaintEvent*)
         int x = qMin(-scrollPos, 0) + leftMargin;
         while(x < width())
         {
-            pb.drawStaticText(QPointF(x, (height() - wholeTextSize.height()) / 2) + QPoint(2, 2), staticText);
+            pb.drawStaticText(QPointF(x, (height() - wholeTextSize.height())), staticText);
             x += wholeTextSize.width();
         }
 
@@ -109,7 +109,7 @@ void ScrollText::paintEvent(QPaintEvent*)
     }
     else
     {
-        p.drawStaticText(QPointF(leftMargin, (height() - wholeTextSize.height()) / 2), staticText);
+        p.drawStaticText(QPointF(leftMargin, (height() - wholeTextSize.height())), staticText);
     }
 }
 

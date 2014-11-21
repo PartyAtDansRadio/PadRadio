@@ -16,7 +16,7 @@ along with PadRadio. If not, see <http://www.gnu.org/licenses/>.
 See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 
 NOTE:
-    This class scrolltext is the work of Sebastian Lehmann and was found at
+    This class scrolltext is mostly the work of Sebastian Lehmann and was found at
     https://stackoverflow.com/questions/10651514/text-scrolling-marquee-in-qlabel
     from 2012 under the Stackoverflow username Leemes.
 */

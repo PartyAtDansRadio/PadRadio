@@ -4,13 +4,13 @@
 #
 #-------------------------------------------------
 
-QT += core gui multimedia
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
+QT += core gui widgets multimedia
 TARGET = PadRadio
-
 TEMPLATE = app
+CONFIG += mobility c++11
+MOBILITY += messaging
+RESOURCES += Files.qrc
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 SOURCES += main.cpp\
     Window/window.cpp \
@@ -20,7 +20,14 @@ SOURCES += main.cpp\
     Settings/settings.cpp \
     Settings/boolsetting.cpp \
     Settings/textsetting.cpp \
-    Settings/divsetting.cpp
+    Settings/divsetting.cpp \
+    Window/timebar.cpp \
+    Window/toolbar.cpp \
+    Window/serverinfo.cpp \
+    Window/songcaster.cpp \
+    Window/SongDisplay/albumart.cpp \
+    Window/SongDisplay/songinfo.cpp \
+    Window/SongDisplay/songdisplay.cpp
 
 HEADERS += Window/window.h \
     Window/scrolltext.h \
@@ -29,19 +36,18 @@ HEADERS += Window/window.h \
     Settings/settings.h \
     Settings/boolsetting.h \
     Settings/textsetting.h \
-    Settings/divsetting.h
-
-FORMS += Window/window.ui
-
-CONFIG += mobility c++11
-
-MOBILITY += messaging
-
-ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+    Settings/divsetting.h \
+    Window/timebar.h \
+    Window/toolbar.h \
+    Window/serverinfo.h \
+    Window/songcaster.h \
+    Window/SongDisplay/albumart.h \
+    Window/SongDisplay/songinfo.h \
+    Window/SongDisplay/songdisplay.h
 
 OTHER_FILES += \
     android/AndroidManifest.xml \
     LICENSE \
     README.md
 
-RESOURCES += Files.qrc
+FORMS += Window/window.ui

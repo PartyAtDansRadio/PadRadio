@@ -21,18 +21,20 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 
 #include <QMainWindow>
 #include <QMediaPlayer>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QTimer>
 #include <QDesktopServices>
 #include <QSystemTrayIcon>
 #include <QDesktopWidget>
 #include <QSettings>
 #include <QScreen>
-#include <QResizeEvent>
+#include <QVBoxLayout>
+#include <QKeyEvent>
 
-//#include "scrolltext.h" //Need this for later
 #include "sammedia.h"
+#include "serverinfo.h"
+#include "SongDisplay/songdisplay.h"
+#include "timebar.h"
+#include "toolbar.h"
+#include "songcaster.h"
 #include "../About/about.h"
 #include "../Settings/settings.h"
 
@@ -47,36 +49,38 @@ class Window : public QMainWindow
 
 public:
     explicit Window(QWidget *parent = 0);
-    void updateImage(QUrl albumArt = QUrl());
     ~Window();
 
 protected:
-    void resizeEvent(QResizeEvent* event);
     void keyPressEvent(QKeyEvent *event);
 
 private:
-    Ui::Window *ui;
-    About *aboutWindow;
-    Settings *settingsWindow;
+    //System
     QSettings *settings;
+    SamMedia *mediaPlayer;
+    //TaskBar
     QSystemTrayIcon* systemTray;
     QAction *buttonAction;
     QAction *windowAction;
-    bool playing; //Temp var, need to find or add this value in mediaPlayer
-    SamMedia *mediaPlayer;
-    QTimer *timer;
-
+    //Widgets
+    ServerInfo *serverInfo;
+    SongDisplay *songDisplay;
+    TimeBar *timeBar;
+    ToolBar *toolBar;
+    SongCaster *songCaster;
+    //Windows
+    About *aboutWindow;
+    Settings *settingsWindow; 
+    //EOL code
+    Ui::Window *ui;
 private slots:
-    void mainLoop();
-    void updateImageReply(QNetworkReply* reply);
     void samDidMetaUpdate();
     void showWindow();
     void on_actionReport_Bug_triggered();
     void on_actionAbout_triggered();
     void on_actionSettings_triggered();
     void on_actionExit_triggered();
-    void on_toolAlbumArt_clicked();
-    void on_playButton_toggled(bool checked);
+    void albumArt_toggled(bool toggled);
 };
 
 #endif // WINDOW_H

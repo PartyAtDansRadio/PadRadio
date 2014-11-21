@@ -19,35 +19,68 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include "window.h"
 #include "ui_window.h"
 
+//Resize widgets for better display
+//QScreen *i = QApplication::screens().at(0);
+//qDebug() << i->devicePixelRatio() << qApp->desktop()->logicalDpiX();
 Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
 {
-    //Setup UI
+    //Load settings
     ui->setupUi(this);
     settings = new QSettings("Settings.ini", QSettings::IniFormat, this);
+
+    //Setup media player
+    mediaPlayer = new SamMedia(QUrl(settings->value("MetaData").toString()), this);
+    mediaPlayer->setMedia(QUrl(settings->value("MediaStream").toString()));
+    mediaPlayer->setVolume(50);
+    mediaPlayer->play();
+
+    //Setup QWidgets
+    serverInfo = new ServerInfo(mediaPlayer, this);
+    songDisplay = new SongDisplay(mediaPlayer);
+    timeBar = new TimeBar(mediaPlayer, this);
+    toolBar = new ToolBar(mediaPlayer, this);
+    QSpacerItem *spacer = new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    QFrame *div = new QFrame(this);
+    div->setAutoFillBackground(true);
+    div->setFrameShape(QFrame::HLine);
+    div->setFrameShadow(QFrame::Sunken);
+    songCaster = new SongCaster(mediaPlayer, this);
+    centralWidget()->layout()->addWidget(serverInfo);
+    centralWidget()->layout()->addWidget(songDisplay);
+    centralWidget()->layout()->addWidget(timeBar);
+    centralWidget()->layout()->addWidget(toolBar);
+    centralWidget()->layout()->addItem(spacer);
+    centralWidget()->layout()->addWidget(div);
+    centralWidget()->layout()->addWidget(songCaster);
+
+    //Setup window
+    setMaximumHeight(0);
+    setMinimumWidth(400);
+    setMaximumWidth(minimumWidth());
     if(settings->value("alwaysTop").toBool())
         setWindowFlags(Qt::WindowStaysOnTopHint);
     if(settings->value("rememberLocation").toBool())
             restoreGeometry(settings->value("WindowGeometry").toByteArray());
     if(settings->value("smallPlayer").toBool()) {
-        ui->toolAlbumArt->hide();
-        setMaximumHeight(300);
-        setMaximumWidth(minimumWidth());
+        serverInfo->hide();
+        songDisplay->hideAlbumArt(true);
+        div->hide();
+        songCaster->hide();
     }
     else {
-        setMinimumHeight(610);
+        setMinimumHeight(600);
     }
 
+    //Setup other windows
+    aboutWindow = new About();
+    settingsWindow = new Settings();
+
     //Theme ui
-    updateImage();
     QFile theme(":/Window/Theme");
     theme.open(QFile::ReadOnly | QFile::Text);
     QTextStream themeInput(&theme);
     setStyleSheet(themeInput.readAll());
     theme.close();
-
-    //Setup other windows
-    aboutWindow = new About();
-    settingsWindow = new Settings();
 
     //Create taskbar icon
     QMenu *trayIconMenu = new QMenu(this);
@@ -69,31 +102,12 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     if(settings->value("showTaskbarIcon").toBool())
         systemTray->show();
 
-    //Setup media player
-    mediaPlayer = new SamMedia(QUrl(settings->value("MetaData").toString()), this);
-    mediaPlayer->setMedia(QUrl(settings->value("MediaStream").toString()));
-    mediaPlayer->setVolume(50);
-
     //Setup events
-    timer = new QTimer(this);
-    connect(ui->volumeSlider, SIGNAL(valueChanged(int)), mediaPlayer, SLOT(setVolume(int)));
-    connect(timer, SIGNAL(timeout()), SLOT(mainLoop()));
     connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(samDidMetaUpdate()));
     //connect(buttonAction, SIGNAL(triggered()), SLOT(mediaButton_clicked())); //This one needs fixing (taskbar play/stop)
     connect(windowAction, SIGNAL(triggered()), SLOT(showWindow()));
+    connect(songDisplay, SIGNAL(albumArtToggled(bool)), SLOT(albumArt_toggled(bool)));
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-}
-
-void Window::resizeEvent(QResizeEvent* event)
-{
-    //Resize widgets for better display
-
-    //QScreen *i = QApplication::screens().at(0);
-    //qDebug() << i->devicePixelRatio() << qApp->desktop()->logicalDpiX();
-
-    ui->progressBar->setMinimumWidth(event->size().width()*0.90*0.75);
-    ui->volumeSlider->setMinimumWidth(event->size().width()*0.50*0.75);
-    ui->playButton->setMinimumWidth(event->size().width()*0.50*0.75);
 }
 
 void Window::keyPressEvent(QKeyEvent *event)
@@ -107,66 +121,18 @@ void Window::keyPressEvent(QKeyEvent *event)
         menuBar()->show();
     }
     else if(event->key()==32 || event->key()==16777220) { //Space & Enter
-        if(playing) {
-            ui->playButton->toggled(false);
-            ui->playButton->setChecked(false);
+//        if(mediaPlayer->isPlaying()) { // add isPlaying() to SamMedia class
+//            ui->playButton->toggled(false);
+//            ui->playButton->setChecked(false);
 
-        }
-        else {
-            ui->playButton->toggled(true);
-            ui->playButton->setChecked(true);
-        }
+//        }
+//        else {
+//            ui->playButton->toggled(true);
+//            ui->playButton->setChecked(true);
+//        }
     }
     else {
         event->ignore();
-    }
-}
-
-void Window::mainLoop()
-{
-    //Try to run all timed tasks
-    if(ui->toolAlbumArt->iconSize() != QSize(ui->toolAlbumArt->height(), ui->toolAlbumArt->height()))
-        ui->toolAlbumArt->setIconSize(QSize(ui->toolAlbumArt->height(), ui->toolAlbumArt->height()));
-    QTime start = mediaPlayer->metaData(SamMetaType::MetaUpdateTime).toTime();
-    QTime end = mediaPlayer->metaData(SamMetaType::Duration).toTime();
-    QTime now = QTime::currentTime();
-    int toEnd = start.msecsTo(now);
-    int atEnd = QTime(0, 0, 0).msecsTo(end);
-    QString secs = QString::number((int)(toEnd/1000)%60);
-    if(secs.length() == 1)
-        secs = '0' + secs;
-    ui->musicTimeLeft->setText(QString::number((int)((toEnd/(1000*60))%60)) +
-                               ":" + secs + " / " + end.toString("m:ss"));
-    ui->progressBar->setValue(((float)toEnd/(float)atEnd)*1000);
-}
-
-void Window::updateImage(QUrl albumArt)
-{
-    //Try to update current album art image by resource
-    if(albumArt == QUrl()) {
-        QPixmap map;
-        map.load(":/Window/PadLogo");
-        ui->toolAlbumArt->setIcon(QIcon(map.scaled(1080, 1080, Qt::KeepAspectRatio)));
-    }
-    else {
-        QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-        connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(updateImageReply(QNetworkReply*)));
-        manager->get(QNetworkRequest(QUrl(albumArt)));
-    }
-}
-
-void Window::updateImageReply(QNetworkReply* reply)
-{
-    //Try to set current album art image by network
-    if(reply->error() == reply->NoError) {
-        QPixmap map;
-        map.loadFromData(reply->readAll());
-        ui->toolAlbumArt->setIcon(QIcon(map.scaled(1080, 1080, Qt::KeepAspectRatio)));
-    }
-    else {
-        QPixmap map;
-        map.load(":/Window/PadLogo");
-        ui->toolAlbumArt->setIcon(QIcon(map.scaled(1080, 1080, Qt::KeepAspectRatio)));
     }
 }
 
@@ -178,25 +144,6 @@ void Window::samDidMetaUpdate()
                                 "'s \"" + mediaPlayer->metaData(SamMetaType::Title).toString() +
                                 "\" from " + mediaPlayer->metaData(SamMetaType::Title).toString() +
                                 ".", QSystemTrayIcon::Information, 30000);
-    updateImage(mediaPlayer->metaData(SamMetaType::CoverArtImage).toUrl());
-    ui->musicListeners->setText(mediaPlayer->metaData(SamMetaType::Listeners).toString());
-    ui->musicMaxListeners->setText(mediaPlayer->metaData(SamMetaType::ListenersMax).toString());
-    ui->musicArtist->setText(mediaPlayer->metaData(SamMetaType::AlbumArtist).toString());
-    ui->musicAlbum->setText(mediaPlayer->metaData(SamMetaType::AlbumTitle).toString());
-    ui->musicTitle->setText(mediaPlayer->metaData(SamMetaType::Title).toString());
-    ui->musicYear->setText(mediaPlayer->metaData(SamMetaType::Year).toString());
-    ui->musicGenre->setText(mediaPlayer->metaData(SamMetaType::Genre).toString());
-    QString nextAlbumArtist = mediaPlayer->metaData(SamMetaType::NextAlbumArtist).toString();
-    QString nextAlbumTitle = mediaPlayer->metaData(SamMetaType::NextAlbumTitle).toString();
-    QString nextTitle = mediaPlayer->metaData(SamMetaType::NextTitle).toString();
-    ui->nextSong->setText("Next up is " + nextAlbumArtist + "'s \"" + nextTitle + "\" from " + nextAlbumTitle + "...");
-
-    //Try to start main loop
-    if(!timer->isActive()) {
-        ui->playButton->toggled(true);
-        ui->playButton->setChecked(true);
-        timer->start(50);
-    }
 }
 
 void Window::showWindow()
@@ -243,30 +190,21 @@ void Window::on_actionExit_triggered()
     qApp->quit();
 }
 
-void Window::on_toolAlbumArt_clicked()
+void Window::albumArt_toggled(bool toggled)
 {
     //Show fullscreen if using a desktop OS
     #if defined(Q_OS_WIN) || defined(Q_OS_OSX) || defined(Q_OS_LINUX)
-    if(isFullScreen()) {
-        showNormal();
-        menuBar()->show();
-    }
-    else {
+    if(!isFullScreen() && !toggled) {
+        setMaximumHeight(999999);
+        setMaximumWidth(999999);
         showFullScreen();
         menuBar()->hide();
     }
-    #endif
-}
-
-void Window::on_playButton_toggled(bool checked)
-{
-    playing = checked;
-    if(checked) {
-        ui->playButton->setText("Stop");
-        mediaPlayer->play();
-    }
     else {
-        ui->playButton->setText("Play");
-        mediaPlayer->stop();
+        showNormal();
+        menuBar()->show();
+        setMaximumHeight(0);
+        setMaximumWidth(0);
     }
+    #endif
 }
