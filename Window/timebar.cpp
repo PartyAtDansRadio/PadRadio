@@ -23,6 +23,7 @@ TimeBar::TimeBar(SamMedia *mediaPlayer, QWidget *parent) :
 {
     //Setup widgets
     progressBar = new QProgressBar(this);
+    progressBar->setTextVisible(false);
     progressBar->setRange(0, 1000);
     time = new QLabel("0:00 / 0:00", this);
 

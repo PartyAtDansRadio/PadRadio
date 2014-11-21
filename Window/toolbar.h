@@ -33,9 +33,10 @@ class ToolBar : public QFrame
         explicit ToolBar(SamMedia *mediaPlayer, QWidget *parent = 0);
     private:
         SamMedia *mediaPlayer;
-        QPushButton *playStop;
-    private slots:
+        QPushButton *playStop;\
+    public slots:
         void togglePlay(bool play);
+    private slots:
         void changeVolume(int volume);
 };
 

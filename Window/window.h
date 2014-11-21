@@ -46,41 +46,42 @@ namespace Ui
 class Window : public QMainWindow
 {
     Q_OBJECT
+    public:
+        explicit Window(QWidget *parent = 0);
+        ~Window();
 
-public:
-    explicit Window(QWidget *parent = 0);
-    ~Window();
+    protected:
+        void keyPressEvent(QKeyEvent *event);
 
-protected:
-    void keyPressEvent(QKeyEvent *event);
-
-private:
-    //System
-    QSettings *settings;
-    SamMedia *mediaPlayer;
-    //TaskBar
-    QSystemTrayIcon* systemTray;
-    QAction *buttonAction;
-    QAction *windowAction;
-    //Widgets
-    ServerInfo *serverInfo;
-    SongDisplay *songDisplay;
-    TimeBar *timeBar;
-    ToolBar *toolBar;
-    SongCaster *songCaster;
-    //Windows
-    About *aboutWindow;
-    Settings *settingsWindow; 
-    //EOL code
-    Ui::Window *ui;
-private slots:
-    void samDidMetaUpdate();
-    void showWindow();
-    void on_actionReport_Bug_triggered();
-    void on_actionAbout_triggered();
-    void on_actionSettings_triggered();
-    void on_actionExit_triggered();
-    void albumArt_toggled(bool toggled);
+    private:
+        //System
+        QSettings *settings;
+        SamMedia *mediaPlayer;
+        //TaskBar
+        QSystemTrayIcon* systemTray;
+        QAction *buttonAction;
+        QAction *windowAction;
+        //Widgets
+        ServerInfo *serverInfo;
+        SongDisplay *songDisplay;
+        TimeBar *timeBar;
+        ToolBar *toolBar;
+        SongCaster *songCaster;
+        //Windows
+        About *aboutWindow;
+        Settings *settingsWindow;
+        //EOL code
+        Ui::Window *ui;
+    private slots:
+        void samDidMetaUpdate();
+        void showWindow();
+        void on_actionReport_Bug_triggered();
+        void on_actionAbout_triggered();
+        void on_actionSettings_triggered();
+        void on_actionExit_triggered();
+        void albumArt_toggled(bool toggled);
+        void mediaButton_togglePlay(bool play); //Need to move to Taskbar class
+        void mediaButton_clicked(); //Need to move to Taskbar class
 };
 
 #endif // WINDOW_H

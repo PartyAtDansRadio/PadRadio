@@ -50,6 +50,7 @@ public:
     explicit SamMedia(QUrl samMetaData, QObject *parent = 0);
     QVariant metaData(QString &key) const;
     QStringList availableMetaData() const;
+    bool isPlaying();
 
 private:
     struct SamExtraMetaData
@@ -69,6 +70,7 @@ private:
         int Year;
 
     };
+    bool playing;
     bool hasData;
     bool doingUpdate;
     QTimer *timer;
@@ -77,12 +79,15 @@ private:
 
 signals:
     void samMetaDataChanged();
+    void isPlayingState(bool);
 
 private slots:
+    void setPlaying(QMediaPlayer::State state);
     void timeTriggerUpdate();
     void samMetaDataReply(QNetworkReply* reply);
 
 public slots:
+    void togglePlayStop();
     void updateSamMetaData();
 };
 

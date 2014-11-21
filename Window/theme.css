@@ -8,7 +8,7 @@
     color:white;
 }
 
-QMenuBar * {
+QMenuBar, QMenu {
     color:black;
 }
 
@@ -30,10 +30,6 @@ SongInfo {
     border: 5px solid rgba(68, 119, 170, 150);
     border-radius: 40px;
     background-color:rgba(68, 119, 170, 125);
-}
-
-TimeBar, ToolBar {
-    ubackground-color: rgb(102, 153, 204);
 }
 
 TimeBar > QLabel {

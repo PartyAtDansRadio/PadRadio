@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>Window</class>
  <widget class="QMainWindow" name="Window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>191</width>
+    <height>39</height>
+   </rect>
+  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
     <horstretch>0</horstretch>
@@ -26,8 +34,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>204</width>
-     <height>27</height>
+     <width>191</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="autoFillBackground">

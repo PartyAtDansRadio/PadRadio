@@ -22,11 +22,15 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 SamMedia::SamMedia(QUrl samMetaData, QObject *parent) :
     QMediaPlayer(parent, QMediaPlayer::StreamPlayback), samMetaData(samMetaData)
 {
+    //Setup object
+    playing = false;
     doingUpdate = false;
     hasData = false;    
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), SLOT(timeTriggerUpdate()));
     timer->start(100);
+
+    connect(this, SIGNAL(stateChanged(QMediaPlayer::State)), SLOT(setPlaying(QMediaPlayer::State)));
+    connect(timer, SIGNAL(timeout()), SLOT(timeTriggerUpdate()));
 }
 
 QVariant SamMedia::metaData(QString &key) const
@@ -176,4 +180,26 @@ void SamMedia::samMetaDataReply(QNetworkReply* reply)
         timer->setInterval(100);
     }
     doingUpdate = false;
+}
+
+void SamMedia::togglePlayStop()
+{
+    if(isPlaying())
+        stop();
+    else
+        play();
+}
+
+void SamMedia::setPlaying(QMediaPlayer::State state)
+{
+    if(state == PlayingState)
+        playing = true;
+    else
+        playing = false;
+    emit isPlayingState(playing);
+}
+
+bool SamMedia::isPlaying()
+{
+    return playing;
 }

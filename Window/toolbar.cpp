@@ -37,6 +37,7 @@ ToolBar::ToolBar(SamMedia *mediaPlayer, QWidget *parent) :
     holder->addWidget(slider);
 
     //Setup events
+    connect(mediaPlayer, SIGNAL(isPlayingState(bool)), SLOT(togglePlay(bool)));
     connect(playStop, SIGNAL(toggled(bool)), SLOT(togglePlay(bool)));
     connect(slider, SIGNAL(valueChanged(int)), SLOT(changeVolume(int)));
 }
@@ -44,12 +45,14 @@ ToolBar::ToolBar(SamMedia *mediaPlayer, QWidget *parent) :
 void ToolBar::togglePlay(bool play)
 {
     if(play) {
-        mediaPlayer->play();
+        if(!mediaPlayer->isPlaying())
+            mediaPlayer->play();
         playStop->setText("Stop");
     }
     else {
-        mediaPlayer->stop();
-        playStop->setText("Start");
+        if(mediaPlayer->isPlaying())
+            mediaPlayer->stop();
+        playStop->setText("Play");
     }
 }
 

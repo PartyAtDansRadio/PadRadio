@@ -104,7 +104,8 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
 
     //Setup events
     connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(samDidMetaUpdate()));
-    //connect(buttonAction, SIGNAL(triggered()), SLOT(mediaButton_clicked())); //This one needs fixing (taskbar play/stop)
+    connect(mediaPlayer, SIGNAL(isPlayingState(bool)), SLOT(mediaButton_togglePlay(bool)));
+    connect(buttonAction, SIGNAL(triggered()), SLOT(mediaButton_clicked()));
     connect(windowAction, SIGNAL(triggered()), SLOT(showWindow()));
     connect(songDisplay, SIGNAL(albumArtToggled(bool)), SLOT(albumArt_toggled(bool)));
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -121,15 +122,12 @@ void Window::keyPressEvent(QKeyEvent *event)
         menuBar()->show();
     }
     else if(event->key()==32 || event->key()==16777220) { //Space & Enter
-//        if(mediaPlayer->isPlaying()) { // add isPlaying() to SamMedia class
-//            ui->playButton->toggled(false);
-//            ui->playButton->setChecked(false);
-
-//        }
-//        else {
-//            ui->playButton->toggled(true);
-//            ui->playButton->setChecked(true);
-//        }
+        if(mediaPlayer->isPlaying()) {
+            toolBar->togglePlay(false);
+        }
+        else {
+            toolBar->togglePlay(true);
+        }
     }
     else {
         event->ignore();
@@ -142,7 +140,7 @@ void Window::samDidMetaUpdate()
     if(settings->value("showTaskbarIcon").toBool() && settings->value("showMessages").toBool() && !isActiveWindow())
         systemTray->showMessage("PadRadio", "Playing " + mediaPlayer->metaData(SamMetaType::AlbumArtist).toString() +
                                 "'s \"" + mediaPlayer->metaData(SamMetaType::Title).toString() +
-                                "\" from " + mediaPlayer->metaData(SamMetaType::Title).toString() +
+                                "\" from " + mediaPlayer->metaData(SamMetaType::AlbumTitle).toString() +
                                 ".", QSystemTrayIcon::Information, 30000);
 }
 
@@ -207,4 +205,29 @@ void Window::albumArt_toggled(bool toggled)
         setMaximumWidth(0);
     }
     #endif
+}
+
+void Window::mediaButton_togglePlay(bool play)
+{
+    if(play) {
+        if(!mediaPlayer->isPlaying())
+            mediaPlayer->play();
+        buttonAction->setText("Stop");
+    }
+    else {
+        if(mediaPlayer->isPlaying())
+            mediaPlayer->stop();
+        buttonAction->setText("Play");
+    }
+}
+void Window::mediaButton_clicked()
+{
+    if(mediaPlayer->isPlaying()) {
+        mediaPlayer->stop();
+        buttonAction->setText("Play");
+    }
+    else {
+        mediaPlayer->play();
+        buttonAction->setText("Stop");
+    }
 }
