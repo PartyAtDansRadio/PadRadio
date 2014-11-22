@@ -74,7 +74,7 @@ Settings::Settings(QWidget *parent) : QFrame(parent)
     setLayout(noScroll);
 
     //Set window type and location
-    setWindowTitle("Party At Dans Radio");
+    setWindowTitle("Pad Radio - Settings");
     resize(minimumWidth(), height());
     setMaximumWidth(minimumWidth());
     QScreen *screen = QApplication::screens().at(0);

@@ -73,7 +73,7 @@ class Window : public QMainWindow
         //EOL code
         Ui::Window *ui;
     private slots:
-        void samDidMetaUpdate();
+        void showNowPlaying();
         void showWindow();
         void on_actionReport_Bug_triggered();
         void on_actionAbout_triggered();

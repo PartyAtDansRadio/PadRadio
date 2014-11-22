@@ -21,7 +21,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 About::About(QWidget *parent) : QFrame(parent)
 {
     //Set window type and location
-    setWindowTitle("Party At Dans Radio");
+    setWindowTitle("Pad Radio - About");
     setMaximumWidth(425);
     setMaximumHeight(300);
     setMinimumWidth(maximumWidth());

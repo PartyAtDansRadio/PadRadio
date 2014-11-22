@@ -103,7 +103,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
         systemTray->show();
 
     //Setup events
-    connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(samDidMetaUpdate()));
+    connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(showNowPlaying()));
     connect(mediaPlayer, SIGNAL(isPlayingState(bool)), SLOT(mediaButton_togglePlay(bool)));
     connect(buttonAction, SIGNAL(triggered()), SLOT(mediaButton_clicked()));
     connect(windowAction, SIGNAL(triggered()), SLOT(showWindow()));
@@ -134,7 +134,7 @@ void Window::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void Window::samDidMetaUpdate()
+void Window::showNowPlaying()
 {
     //Update all UI parts
     if(settings->value("showTaskbarIcon").toBool() && settings->value("showMessages").toBool() && !isActiveWindow())

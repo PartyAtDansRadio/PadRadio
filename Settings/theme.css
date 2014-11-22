@@ -1,10 +1,10 @@
 Settings {
     border: 3px solid #47A;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 black, stop:1 gray);
 }
 
-Settings, #scrollZone {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 black, stop:1 gray);
-    border: 3px solid rgb(68, 119, 170);
+#scrollZone {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 blue, stop:1 black);
 }
 
 Settings > QLabel, DivSetting  > QLabel, QPushButton {
@@ -23,6 +23,10 @@ QLabel, QPushButton, QTextEdit {
     color:#FFFFFF;
 }
 
-QPushButton, TextSetting > QTextEdit {
+TextSetting > QTextEdit {
     background-color:#47A;
+}
+
+QPushButton {
+    color:black;
 }

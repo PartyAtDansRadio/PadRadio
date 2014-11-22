@@ -31,37 +31,28 @@ NOTE:
 
 class ScrollText : public QWidget
 {
-    Q_OBJECT
-
-public:
-    explicit ScrollText(QWidget *parent = 0);
-
-public slots:
-    QString text() const;
-    void setText(QString text);
-    QString separator() const;
-    void setSeparator(QString separator);
-
-protected:
-    virtual void paintEvent(QPaintEvent *);
-    virtual void resizeEvent(QResizeEvent *);
-
-private:
-    void updateText();
-    QString _text;
-    QString _separator;
-    QStaticText staticText;
-    int singleTextWidth;
-    QSize wholeTextSize;
-    int leftMargin;
-    bool scrollEnabled;
-    int scrollPos;
-    QImage alphaChannel;
-    QImage buffer;
-    QTimer timer;
-
-private slots:
-    virtual void timer_timeout();
+    Q_OBJECT    
+    public:
+        explicit ScrollText(QWidget *parent = 0);
+    protected:
+        virtual void paintEvent(QPaintEvent *);
+        virtual void resizeEvent(QResizeEvent *);
+    private:
+        void updateText();
+        QString textDisplay;
+        QStaticText staticText;
+        int singleTextWidth;
+        QSize wholeTextSize;
+        int leftMargin;
+        bool scrollEnabled;
+        int scrollPos;
+        QImage alphaChannel;
+        QImage buffer;
+        QTimer timer;
+    public slots:
+        void setText(QString text);
+    private slots:
+        virtual void timer_timeout();
 };
 
 #endif // SCROLLTEXT_H
