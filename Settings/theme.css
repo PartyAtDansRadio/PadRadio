@@ -1,5 +1,4 @@
 Settings {
-    border: 3px solid #47A;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 black, stop:1 gray);
 }
 
@@ -8,11 +7,11 @@ Settings {
 }
 
 Settings > QLabel, DivSetting  > QLabel, QPushButton {
-    font: 666 14pt "Cantarell";
+    font: 500 12pt "Cantarell";
 }
 
 BoolSetting  > QLabel, TextSetting > QLabel, TextSetting > QLineEdit {
-    font: 666 10pt "Cantarell";
+    font: 500 10pt "Cantarell";
 }
 
 BoolSetting, DivSetting, TextSetting {
@@ -20,7 +19,7 @@ BoolSetting, DivSetting, TextSetting {
 }
 
 QLabel, QPushButton, QTextEdit {
-    color:#FFFFFF;
+    color:white;
 }
 
 TextSetting > QTextEdit {

@@ -31,6 +31,9 @@ class SongDisplay : public QFrame
     public:
         explicit SongDisplay(SamMedia *mediaPlayer, QWidget *parent = 0);
         void hideAlbumArt(bool hide);
+        void hideTimeBar(bool hide);
+    protected:
+        void resizeEvent(QResizeEvent *);
     private:
         SamMedia *mediaPlayer;
         AlbumArt *albumArt;

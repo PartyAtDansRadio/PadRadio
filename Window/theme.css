@@ -1,6 +1,5 @@
 #centralWidget {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 black, stop:1 gray);
-    border: 3px solid rgb(68, 119, 170);
 }
 
 * {
@@ -15,8 +14,7 @@ QMenuBar, QMenu {
 SongDisplay {
     border: 15px solid rgb(102, 153, 204);
     border-radius: 30px;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 blue, stop:1 black);
-
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 black, stop:1 blue);
 }
 
 AlbumArt > QToolButton {
@@ -31,16 +29,51 @@ SongInfo {
     background-color:rgba(68, 119, 170, 125);
 }
 
-TimeBar > QLabel {
-    background-color: rgba(255, 255, 255, 128);
-    border: 5px solid rgba(255, 255, 255, 128);
-    padding-left:5px;
-    padding-right:5px;
+SongInfo > * {
+    font: 100 10pt "Cantarell";
+}
+
+TimeBar *, ToolBar * {
     color:black;
 }
 
-ToolBar > QPushButton {
-    color:black;
+ToolBar > QFrame, ToolBar > QPushButton {
+    background-color: rgba(255, 255, 255, 128);
+    border: 5px solid rgba(255, 255, 255, 128);
+    padding: 5px 5px 5px 5px;
+}
+
+ToolBar > QPushButton:checked {
+    background-color: rgba(128, 128, 128, 128);
+}
+
+QProgressBar:horizontal {
+    padding-top: -4px;
+    padding-bottom: -4px;
+    text-align:center;
+    border: 5px solid rgba(255, 255, 255, 128);
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
+}
+
+QProgressBar::chunk {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);
+    width: 1px;
+}
+
+QSlider::groove:horizontal {
+    border: 1px solid #999999;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
+    margin: 2px 0px;
+}
+
+QSlider::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);
+    border: 1px solid #5c5c5c;
+    width: 18px;
+    margin: -2px 0px;
+    border-radius: 3px;
 }
 
 SongCaster > QLabel {

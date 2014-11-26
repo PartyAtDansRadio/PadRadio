@@ -39,6 +39,7 @@ SongCaster::SongCaster(SamMedia *mediaPlayer, QWidget *parent) :
 
     //Setup layouts
     QHBoxLayout *holder = new QHBoxLayout(this);
+    holder->setContentsMargins(0, 0, 0, 10);
     setLayout(holder);
     holder->addWidget(nextSong);
     holder->addWidget(serverLink);

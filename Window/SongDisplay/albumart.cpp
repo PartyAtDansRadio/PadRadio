@@ -28,6 +28,7 @@ AlbumArt::AlbumArt(SamMedia *mediaPlayer, QWidget *parent) :
 
     //Setup layout
     QHBoxLayout *holder = new QHBoxLayout(this);
+    holder->setContentsMargins(0, 0, 0, 0);
     setLayout(holder);
     holder->addWidget(albumArt);
 

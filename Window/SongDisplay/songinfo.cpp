@@ -33,6 +33,7 @@ SongInfo::SongInfo(SamMedia *mediaPlayer, QWidget *parent) :
     //Setup layouts
     QVBoxLayout *holder = new QVBoxLayout(this);
     QHBoxLayout *albumHolder = new QHBoxLayout(this);
+    holder->setContentsMargins(10, 0, 10, 0);
     setLayout(holder);
     holder->addLayout(albumHolder);
     albumHolder->addItem(spacerLeft);

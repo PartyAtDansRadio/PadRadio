@@ -28,6 +28,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QScreen>
 #include <QVBoxLayout>
 #include <QKeyEvent>
+#include <QGraphicsDropShadowEffect>
 
 #include "sammedia.h"
 #include "serverinfo.h"

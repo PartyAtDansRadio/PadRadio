@@ -36,7 +36,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
 
     //Setup QWidgets
     serverInfo = new ServerInfo(mediaPlayer, this);
-    songDisplay = new SongDisplay(mediaPlayer);
+    songDisplay = new SongDisplay(mediaPlayer, this);
     timeBar = new TimeBar(mediaPlayer, this);
     toolBar = new ToolBar(mediaPlayer, this);
     QSpacerItem *spacer = new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -45,6 +45,8 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     div->setFrameShape(QFrame::HLine);
     div->setFrameShadow(QFrame::Sunken);
     songCaster = new SongCaster(mediaPlayer, this);
+    centralWidget()->layout()->setContentsMargins(15, 10, 15, 10);
+    centralWidget()->layout()->setSpacing(10);
     centralWidget()->layout()->addWidget(serverInfo);
     centralWidget()->layout()->addWidget(songDisplay);
     centralWidget()->layout()->addWidget(timeBar);
@@ -52,6 +54,24 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     centralWidget()->layout()->addItem(spacer);
     centralWidget()->layout()->addWidget(div);
     centralWidget()->layout()->addWidget(songCaster);
+
+    //Add shadow drop to widgets - need to find a cleaner way to do this
+    QGraphicsDropShadowEffect *effect1 = new QGraphicsDropShadowEffect();
+    effect1->setBlurRadius(5);
+    effect1->setOffset(5, 5);
+    serverInfo->setGraphicsEffect(effect1);
+    QGraphicsDropShadowEffect *effect2 = new QGraphicsDropShadowEffect();
+    effect2->setBlurRadius(5);
+    effect2->setOffset(5, 5);
+    songDisplay->setGraphicsEffect(effect2);
+    QGraphicsDropShadowEffect *effect3 = new QGraphicsDropShadowEffect();
+    effect3->setBlurRadius(5);
+    effect3->setOffset(5, 5);
+    timeBar->setGraphicsEffect(effect3);
+    QGraphicsDropShadowEffect *effect4 = new QGraphicsDropShadowEffect();
+    effect4->setBlurRadius(5);
+    effect4->setOffset(5, 5);
+    toolBar->setGraphicsEffect(effect4);
 
     //Setup window
     setMaximumHeight(0);
@@ -64,6 +84,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     if(settings->value("smallPlayer").toBool()) {
         serverInfo->hide();
         songDisplay->hideAlbumArt(true);
+        timeBar->hide();
         div->hide();
         songCaster->hide();
     }
@@ -75,7 +96,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     aboutWindow = new About();
     settingsWindow = new Settings();
 
-    //Theme ui
+    //Theme window
     QFile theme(":/Window/Theme");
     theme.open(QFile::ReadOnly | QFile::Text);
     QTextStream themeInput(&theme);

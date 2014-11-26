@@ -13,37 +13,37 @@ RESOURCES += Files.qrc
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 SOURCES += main.cpp\
-    Window/window.cpp \
-    Window/scrolltext.cpp \
-    Window/sammedia.cpp \
     About/about.cpp \
     Settings/settings.cpp \
     Settings/boolsetting.cpp \
-    Settings/textsetting.cpp \
     Settings/divsetting.cpp \
+    Settings/textsetting.cpp \
+    Window/window.cpp \
+    Window/sammedia.cpp \
+    Window/serverinfo.cpp \
+    Window/scrolltext.cpp \
+    Window/songcaster.cpp \
     Window/timebar.cpp \
     Window/toolbar.cpp \
-    Window/serverinfo.cpp \
-    Window/songcaster.cpp \
+    Window/SongDisplay/songdisplay.cpp \
     Window/SongDisplay/albumart.cpp \
-    Window/SongDisplay/songinfo.cpp \
-    Window/SongDisplay/songdisplay.cpp
+    Window/SongDisplay/songinfo.cpp
 
-HEADERS += Window/window.h \
-    Window/scrolltext.h \
-    Window/sammedia.h \
-    About/about.h \
+HEADERS += About/about.h \
     Settings/settings.h \
     Settings/boolsetting.h \
-    Settings/textsetting.h \
     Settings/divsetting.h \
+    Settings/textsetting.h \
+    Window/window.h \
+    Window/sammedia.h \
+    Window/serverinfo.h \
+    Window/scrolltext.h \
+    Window/songcaster.h \
     Window/timebar.h \
     Window/toolbar.h \
-    Window/serverinfo.h \
-    Window/songcaster.h \
+    Window/SongDisplay/songdisplay.h \
     Window/SongDisplay/albumart.h \
-    Window/SongDisplay/songinfo.h \
-    Window/SongDisplay/songdisplay.h
+    Window/SongDisplay/songinfo.h
 
 OTHER_FILES += \
     android/AndroidManifest.xml \

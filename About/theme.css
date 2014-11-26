@@ -1,10 +1,6 @@
 * {
-    font: 666 12pt "Cantarell";
-    color:#FFFFFF;
-}
-
-About {
-    border: 3px solid #47A;
+    font: 500 12pt "Cantarell";
+    color:white;
 }
 
 About, QTextEdit {

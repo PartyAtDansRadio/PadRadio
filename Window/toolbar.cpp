@@ -17,24 +17,35 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
 #include "toolbar.h"
-
+#include <QLabel>
 ToolBar::ToolBar(SamMedia *mediaPlayer, QWidget *parent) :
     QFrame(parent), mediaPlayer(mediaPlayer)
 {
     //Setup widgets
     playStop = new QPushButton("Stop", this);
-    playStop->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    playStop->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     playStop->setCheckable(true);
     playStop->setChecked(true);
+    QLabel *turnDown = new QLabel("-", this);
     QSlider *slider = new QSlider(Qt::Horizontal, this);
-    slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     slider->setValue(mediaPlayer->volume());
+    QLabel *turnUp = new QLabel("+", this);
 
     //Setup layout
     QHBoxLayout *holder = new QHBoxLayout(this);
+    holder->setContentsMargins(0, 0, 0, 0);
+    QHBoxLayout *sliderHolder = new QHBoxLayout(this);
+    sliderHolder->setContentsMargins(0, 0, 0, 0);
+    QFrame *sliderFrame = new QFrame(this);
+    sliderFrame->setLayout(sliderHolder);
     setLayout(holder);
     holder->addWidget(playStop);
-    holder->addWidget(slider);
+    holder->addWidget(sliderFrame);
+    sliderHolder->addWidget(turnDown);
+    sliderHolder->addWidget(slider);
+    sliderHolder->addWidget(turnUp);
+    holder->addLayout(sliderHolder);
 
     //Setup events
     connect(mediaPlayer, SIGNAL(isPlayingState(bool)), SLOT(togglePlay(bool)));

@@ -19,19 +19,12 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include "timebar.h"
 
 TimeBar::TimeBar(SamMedia *mediaPlayer, QWidget *parent) :
-    QFrame(parent), mediaPlayer(mediaPlayer)
+    QProgressBar(parent), mediaPlayer(mediaPlayer)
 {
-    //Setup widgets
-    progressBar = new QProgressBar(this);
-    progressBar->setTextVisible(false);
-    progressBar->setRange(0, 1000);
-    time = new QLabel("0:00 / 0:00", this);
-
-    //Setup layout
-    QHBoxLayout *holder = new QHBoxLayout(this);
-    setLayout(holder);
-    holder->addWidget(progressBar);
-    holder->addWidget(time);
+    //Setup widget
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+    setRange(0, 1000);
+    setFormat("0:00 / 0:00");
 
     //Setup events
     QTimer *timer = new QTimer(this);
@@ -54,7 +47,7 @@ void TimeBar::metaUpdate()
         QString currentTime = QString::number((int)((toEnd/(1000*60))%60)) + ":" + secs;
 
         //Output current time and end time
-        time->setText(currentTime + " / " + end.toString("m:ss"));
-        progressBar->setValue(((float)toEnd/(float)atEnd)*1000);
+        setValue(((float)toEnd/(float)atEnd)*1000);
+        setFormat(currentTime + " / " + end.toString("m:ss"));
     }
 }

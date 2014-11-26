@@ -19,14 +19,11 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #ifndef TIMEBAR_H
 #define TIMEBAR_H
 
-#include <QFrame>
-#include <QLabel>
 #include <QProgressBar>
-#include <QHBoxLayout>
 
 #include "sammedia.h"
 
-class TimeBar : public QFrame
+class TimeBar : public QProgressBar
 {
     Q_OBJECT
     public:
@@ -34,7 +31,6 @@ class TimeBar : public QFrame
     private:
         SamMedia *mediaPlayer;
         QProgressBar *progressBar;
-        QLabel *time;
     private slots:
         void metaUpdate();
 };
