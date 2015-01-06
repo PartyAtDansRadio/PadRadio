@@ -26,6 +26,10 @@ TextSetting > QTextEdit {
     background-color:#47A;
 }
 
+TextSetting > QLineEdit{
+    background-color:white;
+}
+
 QPushButton {
     color:black;
 }

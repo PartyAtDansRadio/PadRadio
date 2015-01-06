@@ -20,11 +20,12 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #define TOOLBAR_H
 
 #include <QFrame>
+#include <QLabel>
 #include <QPushButton>
 #include <QSlider>
 #include <QHBoxLayout>
 
-#include "sammedia.h"
+#include "../sammedia.h"
 
 class ToolBar : public QFrame
 {

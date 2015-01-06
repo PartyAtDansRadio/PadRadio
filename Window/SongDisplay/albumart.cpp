@@ -34,20 +34,30 @@ AlbumArt::AlbumArt(SamMedia *mediaPlayer, QWidget *parent) :
 
     //Setup events
     QTimer *timer = new QTimer(this);
-    timer->start(100);
+    timer->start(75);
     connect(timer, SIGNAL(timeout()), SLOT(updateImageSize()));
     connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(metaUpdate()));
     connect(albumArt, SIGNAL(clicked(bool)), SIGNAL(toggled(bool)));
+    connect(this, SIGNAL(toggled(bool)), SLOT(albumArt_toggled(bool)));
 
     //Setup calls
-    updateImageSize();
     metaUpdate();
+    updateImageSize();
+
 }
+
+
+void AlbumArt::albumArt_toggled(bool toggled)
+{
+    if(!toggled)
+        albumArt->setIconSize(QSize(albumArt->minimumWidth(), albumArt->minimumWidth()));
+}
+
 
 void AlbumArt::updateImageSize()
 {
-    if(albumArt->iconSize() != QSize(albumArt->height(), albumArt->height()))
-        albumArt->setIconSize(QSize(albumArt->height(), albumArt->height()));
+    if(albumArt->iconSize() != QSize(albumArt->width(), albumArt->width()) && albumArt->height() >= albumArt->width())
+        albumArt->setIconSize(QSize(albumArt->width(), albumArt->width()));
 }
 
 void AlbumArt::metaUpdate()
@@ -60,7 +70,7 @@ void AlbumArt::updateImage(QUrl albumArtUrl)
     //Try to update current album art image by resource
     if(albumArtUrl == QUrl()) {
         QPixmap map;
-        map.load(":/Window/PadLogo");
+        map.load(":/PadLogo");
         albumArt->setIcon(QIcon(map.scaled(1080, 1080, Qt::KeepAspectRatio)));
     }
     else {
@@ -80,7 +90,7 @@ void AlbumArt::updateImageReply(QNetworkReply* reply)
     }
     else {
         QPixmap map;
-        map.load(":/Window/PadLogo");
+        map.load(":/PadLogo");
         albumArt->setIcon(QIcon(map.scaled(1080, 1080, Qt::KeepAspectRatio)));
     }
 }

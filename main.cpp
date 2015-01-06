@@ -34,6 +34,8 @@ int main(int argc, char *argv[])
     QSettings *settings = new QSettings("Settings.ini", QSettings::IniFormat);
     Settings::loadDefaults(settings);
     Window window;
+    if(settings->value("rememberLocation").toBool())
+            window.restoreGeometry(settings->value("WindowGeometry").toByteArray());
     if(!(settings->value("showTaskbarIcon").toBool() && settings->value("startInTaskbar").toBool()))
         window.show();
     return app.exec();

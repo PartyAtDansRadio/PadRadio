@@ -29,6 +29,7 @@ SamMedia::SamMedia(QUrl samMetaData, QObject *parent) :
     timer = new QTimer(this);
     timer->start(100);
 
+    //Setup Events
     connect(this, SIGNAL(stateChanged(QMediaPlayer::State)), SLOT(setPlaying(QMediaPlayer::State)));
     connect(timer, SIGNAL(timeout()), SLOT(timeTriggerUpdate()));
 }
@@ -142,11 +143,13 @@ void SamMedia::updateSamMetaData()
     manager->get(QNetworkRequest(samMetaData));
 }
 
-void SamMedia::samMetaDataReply(QNetworkReply* reply)
+void SamMedia::samMetaDataReply(QNetworkReply* reply) //raw data can be ""
 {
     //Try to set music info
-    if(reply->error() == reply->NoError) {
-        QList<QString> rawData = QList<QString>(((QString)reply->readAll()).split("\r\n"));
+    QString samReply = (QString)reply->readAll();
+    qDebug() << "samReply:" << samReply;
+    if(reply->error() == reply->NoError && !samReply.isEmpty()) {
+        QList<QString> rawData = QList<QString>(samReply.split("\r\n"));
         QTime updateTime = QTime::fromString(rawData[7], "h:mm:ss ap");
         if(extraMeta.MetaUpdateTime.toString() != updateTime.toString()) {
             qDebug() << "Found Sam MetaData Update...";
@@ -167,15 +170,16 @@ void SamMedia::samMetaDataReply(QNetworkReply* reply)
             extraMeta.Title = rawData[11];
             extraMeta.Year = rawData[12].toInt();
             hasData = true;
-            qDebug() << "Got:" << availableMetaData();
+            qDebug() << "Got:" << availableMetaData() << '\n';
+            emit samMetaDataChanged(this);
             emit samMetaDataChanged();
         }
         else {
-            qDebug() << "MetaData is already up to date!";
+            qDebug() << "MetaData is already up to date!\n";
         }
     }
     else {
-        qDebug() << "Sam MetaData Not Found!";
+        qDebug() << "Sam MetaData Not Found!\n";
         hasData = false;
         timer->setInterval(100);
     }

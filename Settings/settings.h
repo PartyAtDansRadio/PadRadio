@@ -41,6 +41,12 @@ class Settings : public QFrame
     public:
         explicit Settings(QWidget *parent = 0);
         static void loadDefaults(QSettings *settings);
+    private:
+        QSettings *settings;
+        BoolSetting *taskbarMessages;
+        BoolSetting *taskbarStart;
+        TextSetting *mediaStream;
+        TextSetting *metaData;
     private slots:
         void rememberLocation_newValue(bool value);
         void smallPlayer_newValue(bool value);
@@ -50,10 +56,9 @@ class Settings : public QFrame
         void taskbarStart_newValue(bool value);
         void mediaStream_newValue(QString value);
         void metaData_newValue(QString value);
-    private:
-        QSettings *settings;
-        BoolSetting *taskbarMessages;
-        BoolSetting *taskbarStart;
+        void close_window();
+    signals:
+        void updateSettings();
 };
 
 #endif // SETTINGS_H

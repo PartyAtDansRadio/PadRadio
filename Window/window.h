@@ -19,6 +19,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #ifndef WINDOW_H
 #define WINDOW_H
 
+//Qt widgets
 #include <QMainWindow>
 #include <QMediaPlayer>
 #include <QDesktopServices>
@@ -30,14 +31,18 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QKeyEvent>
 #include <QGraphicsDropShadowEffect>
 
-#include "sammedia.h"
+//Custom widgets
+#include "../sammedia.h"
 #include "serverinfo.h"
 #include "SongDisplay/songdisplay.h"
 #include "timebar.h"
 #include "toolbar.h"
 #include "songcaster.h"
+
+//Other windows
 #include "../About/about.h"
 #include "../Settings/settings.h"
+#include "../History/history.h"
 
 namespace Ui
 {
@@ -71,6 +76,7 @@ class Window : public QMainWindow
         //Windows
         About *aboutWindow;
         Settings *settingsWindow;
+        History *historyWindow;
         //EOL code
         Ui::Window *ui;
     private slots:
@@ -83,6 +89,8 @@ class Window : public QMainWindow
         void albumArt_toggled(bool toggled);
         void mediaButton_togglePlay(bool play); //Need to move to Taskbar class
         void mediaButton_clicked(); //Need to move to Taskbar class
+        void settings_update();
+        void on_actionHistory_triggered();
 };
 
 #endif // WINDOW_H

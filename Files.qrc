@@ -1,16 +1,13 @@
 <RCC>
     <qresource prefix="/">
-
-	<file alias="Window/Theme">Window/theme.css</file>
-        <file alias="Window/PadLogo">Window/padLogo.png</file>
-	<file alias="Window/ServerLink">Window/serverLink.html</file>
-
-	<file alias="Settings/Theme">Settings/theme.css</file>
+        <file alias="PadLogo">padLogo.png</file>
+        <file alias="About/Theme">About/theme.css</file>
+        <file alias="About/Note">About/note.html</file>
+        <file alias="Settings/Theme">Settings/theme.css</file>
         <file alias="Settings/CheckChecked">Settings/checkboxChecked.png</file>
         <file alias="Settings/CheckUnchecked">Settings/checkboxUnchecked.png</file>
-
-	<file alias="About/Theme">About/theme.css</file>
-	<file alias="About/Note">About/note.html</file>
-
+        <file alias="Window/Theme">Window/theme.css</file>
+        <file alias="Window/ServerLink">Window/serverLink.html</file>
+        <file alias="History/Theme">History/theme.css</file>
     </qresource>
 </RCC>

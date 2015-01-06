@@ -17,7 +17,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
 #include "toolbar.h"
-#include <QLabel>
+
 ToolBar::ToolBar(SamMedia *mediaPlayer, QWidget *parent) :
     QFrame(parent), mediaPlayer(mediaPlayer)
 {

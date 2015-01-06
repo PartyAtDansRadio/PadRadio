@@ -78,6 +78,7 @@ private:
     QUrl samMetaData;
 
 signals:
+    void samMetaDataChanged(SamMedia *);
     void samMetaDataChanged();
     void isPlayingState(bool);
 

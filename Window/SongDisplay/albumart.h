@@ -25,7 +25,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QToolButton>
 #include <QLabel>
 
-#include "../sammedia.h"
+#include "../../sammedia.h"
 
 class AlbumArt : public QFrame
 {
@@ -41,6 +41,7 @@ class AlbumArt : public QFrame
     private slots:
         void updateImageSize();
         void updateImageReply(QNetworkReply* reply);
+        void albumArt_toggled(bool toggled);
     signals:
         void toggled(bool);
 };

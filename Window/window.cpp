@@ -1,4 +1,4 @@
-/*
+﻿/*
                 Copyright (C) 2014 PartyAtDansRadio
 
 PadRadio is free software: you can redistribute it and/or modify
@@ -27,6 +27,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     //Load settings
     ui->setupUi(this);
     settings = new QSettings("Settings.ini", QSettings::IniFormat, this);
+    //settings_update();
 
     //Setup media player
     mediaPlayer = new SamMedia(QUrl(settings->value("MetaData").toString()), this);
@@ -40,10 +41,6 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     timeBar = new TimeBar(mediaPlayer, this);
     toolBar = new ToolBar(mediaPlayer, this);
     QSpacerItem *spacer = new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    QFrame *div = new QFrame(this);
-    div->setAutoFillBackground(true);
-    div->setFrameShape(QFrame::HLine);
-    div->setFrameShadow(QFrame::Sunken);
     songCaster = new SongCaster(mediaPlayer, this);
     centralWidget()->layout()->setContentsMargins(15, 10, 15, 10);
     centralWidget()->layout()->setSpacing(10);
@@ -52,7 +49,6 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     centralWidget()->layout()->addWidget(timeBar);
     centralWidget()->layout()->addWidget(toolBar);
     centralWidget()->layout()->addItem(spacer);
-    centralWidget()->layout()->addWidget(div);
     centralWidget()->layout()->addWidget(songCaster);
 
     //Add shadow drop to widgets - need to find a cleaner way to do this
@@ -72,29 +68,6 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     effect4->setBlurRadius(5);
     effect4->setOffset(5, 5);
     toolBar->setGraphicsEffect(effect4);
-
-    //Setup window
-    setMaximumHeight(0);
-    setMinimumWidth(400);
-    setMaximumWidth(minimumWidth());
-    if(settings->value("alwaysTop").toBool())
-        setWindowFlags(Qt::WindowStaysOnTopHint);
-    if(settings->value("rememberLocation").toBool())
-            restoreGeometry(settings->value("WindowGeometry").toByteArray());
-    if(settings->value("smallPlayer").toBool()) {
-        serverInfo->hide();
-        songDisplay->hideAlbumArt(true);
-        timeBar->hide();
-        div->hide();
-        songCaster->hide();
-    }
-    else {
-        setMinimumHeight(600);
-    }
-
-    //Setup other windows
-    aboutWindow = new About();
-    settingsWindow = new Settings();
 
     //Theme window
     QFile theme(":/Window/Theme");
@@ -120,8 +93,14 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     systemTray = new QSystemTrayIcon(this);
     systemTray->setIcon(QIcon(":/Window/PadLogo"));
     systemTray->setContextMenu(trayIconMenu);
-    if(settings->value("showTaskbarIcon").toBool())
-        systemTray->show();
+
+    //Setup this window
+    settings_update();
+
+    //Setup other windows
+    aboutWindow = new About();
+    settingsWindow = new Settings();
+    historyWindow = new History();
 
     //Setup events
     connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(showNowPlaying()));
@@ -129,6 +108,8 @@ Window::Window(QWidget *parent) : QMainWindow(parent), ui(new Ui::Window)
     connect(buttonAction, SIGNAL(triggered()), SLOT(mediaButton_clicked()));
     connect(windowAction, SIGNAL(triggered()), SLOT(showWindow()));
     connect(songDisplay, SIGNAL(albumArtToggled(bool)), SLOT(albumArt_toggled(bool)));
+    connect(settingsWindow, SIGNAL(updateSettings()), SLOT(settings_update()));
+    connect(mediaPlayer, SIGNAL(samMetaDataChanged(SamMedia *)), historyWindow, SLOT(songChanged(SamMedia *)));
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
 
@@ -204,6 +185,11 @@ void Window::on_actionSettings_triggered()
     settingsWindow->show();
 }
 
+void Window::on_actionHistory_triggered()
+{
+    historyWindow->show();
+}
+
 void Window::on_actionExit_triggered()
 {
     qApp->quit();
@@ -250,5 +236,43 @@ void Window::mediaButton_clicked()
     else {
         mediaPlayer->play();
         buttonAction->setText("Stop");
+    }
+}
+
+void Window::settings_update()
+{
+    if(settings->value("showTaskbarIcon").toBool())
+        systemTray->show();
+    else
+        systemTray->hide();
+    if(settings->value("alwaysTop").toBool()) {
+        setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+        show();
+        update();
+    }
+    else
+    {
+        setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
+        show();
+        update();
+    }
+    setMaximumHeight(0);
+    setMinimumWidth(400);
+    setMaximumWidth(minimumWidth());
+    if(settings->value("smallPlayer").toBool()) {
+        serverInfo->hide();
+        songDisplay->hideAlbumArt(true);
+        timeBar->hide();
+        songCaster->hide();
+        setMinimumHeight(0);
+        setMaximumHeight(0);
+    }
+    else {
+        serverInfo->show();
+        songDisplay->hideAlbumArt(false);
+        timeBar->show();
+        songCaster->show();
+        setMinimumHeight(600);
+        setMaximumHeight(0);
     }
 }

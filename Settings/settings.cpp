@@ -23,7 +23,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 
 Settings::Settings(QWidget *parent) : QFrame(parent)
 {
-    //Theme ui
+    //Theme window
     QFile theme(":/Settings/Theme");
     theme.open(QFile::ReadOnly | QFile::Text);
     QTextStream themeInput(&theme);
@@ -41,8 +41,8 @@ Settings::Settings(QWidget *parent) : QFrame(parent)
     taskbarMessages = new BoolSetting("Show song info in taskbar", true, this);
     taskbarStart = new BoolSetting("Start PadRadio in taskbar", false, this);
     DivSetting *sep3 = new DivSetting("Server Settings", this);
-    TextSetting *mediaStream = new TextSetting("Stream URL", MEDIASTREAM, this);
-    TextSetting *metaData = new TextSetting("MetaData URL", METADATA, this);
+    mediaStream = new TextSetting("Stream URL", MEDIASTREAM, this);
+    metaData = new TextSetting("MetaData URL", METADATA, this);
     QPushButton *closeWindow = new QPushButton("Close Window", this);
 
     //Show scroll bar widgets
@@ -90,7 +90,7 @@ Settings::Settings(QWidget *parent) : QFrame(parent)
     connect(taskbarStart, SIGNAL(newValue(bool)), SLOT(taskbarStart_newValue(bool)));
     connect(mediaStream, SIGNAL(newValue(QString)), SLOT(mediaStream_newValue(QString)));
     connect(metaData, SIGNAL(newValue(QString)), SLOT(metaData_newValue(QString)));
-    connect(closeWindow, SIGNAL(clicked()), SLOT(close()));
+    connect(closeWindow, SIGNAL(clicked()), SLOT(close_window()));
 
     //Load INI Settings
     settings = new QSettings("Settings.ini", QSettings::IniFormat, this);
@@ -149,6 +149,12 @@ void Settings::mediaStream_newValue(QString value)
 void Settings::metaData_newValue(QString value)
 {
     settings->setValue("MetaData", value);
+}
+
+void Settings::close_window()
+{
+    emit updateSettings();
+    close();
 }
 
 void Settings::loadDefaults(QSettings *settings)

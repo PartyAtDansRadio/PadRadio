@@ -13,13 +13,13 @@ RESOURCES += Files.qrc
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 SOURCES += main.cpp\
+    sammedia.cpp \
     About/about.cpp \
     Settings/settings.cpp \
     Settings/boolsetting.cpp \
     Settings/divsetting.cpp \
     Settings/textsetting.cpp \
     Window/window.cpp \
-    Window/sammedia.cpp \
     Window/serverinfo.cpp \
     Window/scrolltext.cpp \
     Window/songcaster.cpp \
@@ -27,15 +27,18 @@ SOURCES += main.cpp\
     Window/toolbar.cpp \
     Window/SongDisplay/songdisplay.cpp \
     Window/SongDisplay/albumart.cpp \
-    Window/SongDisplay/songinfo.cpp
+    Window/SongDisplay/songinfo.cpp \
+    History/history.cpp \
+    History/memory.cpp \
+    History/song.cpp
 
-HEADERS += About/about.h \
+HEADERS += sammedia.h \
+    About/about.h \
     Settings/settings.h \
     Settings/boolsetting.h \
     Settings/divsetting.h \
     Settings/textsetting.h \
     Window/window.h \
-    Window/sammedia.h \
     Window/serverinfo.h \
     Window/scrolltext.h \
     Window/songcaster.h \
@@ -43,7 +46,10 @@ HEADERS += About/about.h \
     Window/toolbar.h \
     Window/SongDisplay/songdisplay.h \
     Window/SongDisplay/albumart.h \
-    Window/SongDisplay/songinfo.h
+    Window/SongDisplay/songinfo.h \
+    History/history.h \
+    History/memory.h \
+    History/song.h
 
 OTHER_FILES += \
     android/AndroidManifest.xml \

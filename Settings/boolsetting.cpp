@@ -26,6 +26,7 @@ BoolSetting::BoolSetting(QString note, bool checked, QWidget *parent) :
     boolBox->setCheckable(true);
     titleText = new QLabel(note, this);
     boolReset = new QToolButton(this);
+    boolReset->setCheckable(true);
     boolReset->setArrowType(Qt::LeftArrow);
     setChecked(checked);
     setEnabled(true);
@@ -58,6 +59,10 @@ void BoolSetting::setChecked(bool checked)
         boolBox->setIcon(QIcon(":/Settings/CheckChecked"));
     else
         boolBox->setIcon(QIcon(":/Settings/CheckUnchecked"));
+    if(checked == checkedDefault)
+        boolReset->setChecked(false);
+    else
+        boolReset->setChecked(true);
     boolBox->setChecked(checked);
     this->checked = checked;
     emit newValue(checked);

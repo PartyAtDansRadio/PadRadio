@@ -24,8 +24,9 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QFile>
 #include <QSpacerItem>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 
-#include "sammedia.h"
+#include "../sammedia.h"
 #include "scrolltext.h"
 
 class SongCaster : public QFrame

@@ -21,7 +21,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 
 #include <QFrame>
 
-#include "../sammedia.h"
+#include "../../sammedia.h"
 #include "albumart.h"
 #include "songinfo.h"
 

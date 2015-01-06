@@ -16,26 +16,28 @@ along with PadRadio. If not, see <http://www.gnu.org/licenses/>.
 See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
-#ifndef ABOUT_H
-#define ABOUT_H
+#ifndef MEMORY_H
+#define MEMORY_H
 
-#include <QFrame>
-#include <QStyle>
-#include <QScreen>
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QVBoxLayout>
+#include <QObject>
 #include <QFile>
 #include <QTextStream>
-#include <QPushButton>
-#include <QTextEdit>
-#include <QLabel>
 
-class About : public QFrame
+#include "song.h"
+
+class Memory : public QObject
 {
-    Q_OBJECT 
+    Q_OBJECT
     public:
-        explicit About(QWidget *parent = 0);
+        explicit Memory(QString fileName, QObject *parent = 0);
+        int songCount();
+        Song *readSongById(int id);
+        void appendSong(Song *song);
+    private:
+        QString fileName;
+        QVector<QStringList> data;
+        void saveSong(QStringList song);
+        void saveSongsData();
 };
 
-#endif // ABOUT_H
+#endif // MEMORY_H

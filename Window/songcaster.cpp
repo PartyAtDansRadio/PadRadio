@@ -22,6 +22,10 @@ SongCaster::SongCaster(SamMedia *mediaPlayer, QWidget *parent) :
     QFrame(parent), mediaPlayer(mediaPlayer)
 {
     //Setup widgets
+    QFrame *div = new QFrame(this);
+    div->setAutoFillBackground(true);
+    div->setFrameShape(QFrame::HLine);
+    div->setFrameShadow(QFrame::Sunken);
     nextSong = new ScrollText(this);
     nextSong->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     nextSong->setText("Loading, please stand by...");
@@ -38,11 +42,15 @@ SongCaster::SongCaster(SamMedia *mediaPlayer, QWidget *parent) :
     html.close();
 
     //Setup layouts
-    QHBoxLayout *holder = new QHBoxLayout(this);
+    QVBoxLayout *holder = new QVBoxLayout(this);
     holder->setContentsMargins(0, 0, 0, 10);
     setLayout(holder);
-    holder->addWidget(nextSong);
-    holder->addWidget(serverLink);
+    holder->addWidget(div);
+    QHBoxLayout *textHolder = new QHBoxLayout(this);
+    textHolder->setContentsMargins(0, 0, 0, 0);
+    holder->addLayout(textHolder);
+    textHolder->addWidget(nextSong);
+    textHolder->addWidget(serverLink);
 
     //Setup events
     connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(metaUpdate()));

@@ -25,7 +25,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QVBoxLayout>
 #include <QSpacerItem>
 
-#include "../sammedia.h"
+#include "../../sammedia.h"
 
 class SongInfo : public QFrame
 {

@@ -17,6 +17,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
 #include "textsetting.h"
+#include <QDebug>
 
 TextSetting::TextSetting(QString note, QString value, QWidget *parent) :
      QFrame(parent), valueDefault(value)
@@ -25,11 +26,9 @@ TextSetting::TextSetting(QString note, QString value, QWidget *parent) :
     titleText = new QLabel(note, this);
     valueText = new QLineEdit(value, this);
     boolReset = new QToolButton(this);
+    boolReset->setCheckable(true);
     boolReset->setArrowType(Qt::LeftArrow);
-
-    //Connect widgets
-    connect(boolReset, SIGNAL(clicked()), SLOT(resetValue()));
-    connect(valueText, SIGNAL(textEdited(QString)), SIGNAL(newValue(QString)));
+    setValue(value);
 
     //Show widgets
     QHBoxLayout *holder = new QHBoxLayout(this);
@@ -37,6 +36,11 @@ TextSetting::TextSetting(QString note, QString value, QWidget *parent) :
     holder->addWidget(valueText);
     holder->addWidget(boolReset);
     this->setLayout(holder);
+
+    //Connect widgets
+    connect(boolReset, SIGNAL(clicked()), SLOT(resetValue()));
+    connect(valueText, SIGNAL(textChanged(QString)), SLOT(setValue(QString)));
+    connect(valueText, SIGNAL(textEdited(QString)), SLOT(setValue(QString)));
 }
 
 QString TextSetting::getValue()
@@ -46,10 +50,15 @@ QString TextSetting::getValue()
 
 void TextSetting::setValue(QString value)
 {
+    if(value == valueDefault)
+        boolReset->setChecked(false);
+    else
+        boolReset->setChecked(true);
     valueText->setText(value);
+    emit newValue(value);
 }
 
 void TextSetting::resetValue()
 {
-    valueText->setText(valueDefault);
+    setValue(valueDefault);
 }

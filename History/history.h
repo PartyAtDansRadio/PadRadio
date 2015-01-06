@@ -16,26 +16,34 @@ along with PadRadio. If not, see <http://www.gnu.org/licenses/>.
 See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 */
 
-#ifndef ABOUT_H
-#define ABOUT_H
+#ifndef HISTORY_H
+#define HISTORY_H
 
 #include <QFrame>
-#include <QStyle>
-#include <QScreen>
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QVBoxLayout>
 #include <QFile>
 #include <QTextStream>
-#include <QPushButton>
-#include <QTextEdit>
+#include <QVBoxLayout>
+#include <QApplication>
+#include <QStyle>
+#include <QScreen>
+#include <QTableWidget>
 #include <QLabel>
+#include <QPushButton>
 
-class About : public QFrame
+#include "sammedia.h"
+#include "memory.h"
+#include "song.h"
+
+class History : public QFrame
 {
-    Q_OBJECT 
+    Q_OBJECT
     public:
-        explicit About(QWidget *parent = 0);
+        explicit History(QWidget *parent = 0);
+        QTableWidget *table;
+        Memory *memory;
+    public slots:
+        void addToTable(Song *song);
+        void songChanged(SamMedia *mediaPlayer);
 };
 
-#endif // ABOUT_H
+#endif // HISTORY_H

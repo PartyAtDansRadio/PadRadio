@@ -21,7 +21,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 
 #include <QProgressBar>
 
-#include "sammedia.h"
+#include "../sammedia.h"
 
 class TimeBar : public QProgressBar
 {
