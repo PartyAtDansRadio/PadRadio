@@ -55,5 +55,3 @@ OTHER_FILES += \
     android/AndroidManifest.xml \
     LICENSE \
     README.md
-
-FORMS += Window/window.ui

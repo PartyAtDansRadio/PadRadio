@@ -30,6 +30,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QVBoxLayout>
 #include <QKeyEvent>
 #include <QGraphicsDropShadowEffect>
+#include <QMenuBar>
 
 //Custom widgets
 #include "../sammedia.h"
@@ -43,11 +44,6 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include "../About/about.h"
 #include "../Settings/settings.h"
 #include "../History/history.h"
-
-namespace Ui
-{
-    class Window;
-}
 
 class Window : public QMainWindow
 {
@@ -77,20 +73,14 @@ class Window : public QMainWindow
         About *aboutWindow;
         Settings *settingsWindow;
         History *historyWindow;
-        //EOL code
-        Ui::Window *ui;
     private slots:
         void showNowPlaying();
         void showWindow();
-        void on_actionReport_Bug_triggered();
-        void on_actionAbout_triggered();
-        void on_actionSettings_triggered();
-        void on_actionExit_triggered();
+        void actionReportBug_triggered();
         void albumArt_toggled(bool toggled);
         void mediaButton_togglePlay(bool play); //Need to move to Taskbar class
         void mediaButton_clicked(); //Need to move to Taskbar class
         void settings_update();
-        void on_actionHistory_triggered();
 };
 
 #endif // WINDOW_H
