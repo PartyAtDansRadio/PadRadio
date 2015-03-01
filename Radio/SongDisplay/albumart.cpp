@@ -34,7 +34,7 @@ AlbumArt::AlbumArt(SamMedia *mediaPlayer, QWidget *parent) :
 
     //Setup events
     QTimer *timer = new QTimer(this);
-    timer->start(75);
+    //timer->start(75);
     connect(timer, SIGNAL(timeout()), SLOT(updateImageSize()));
     connect(mediaPlayer, SIGNAL(samMetaDataChanged()), SLOT(metaUpdate()));
     connect(albumArt, SIGNAL(clicked(bool)), SIGNAL(toggled(bool)));

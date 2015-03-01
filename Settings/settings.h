@@ -28,12 +28,10 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QApplication>
 #include <QFile>
 #include <QTextStream>
-#include <QPushButton>
 
 #include "boolsetting.h"
 #include "textsetting.h"
 #include "divsetting.h"
-
 
 class Settings : public QFrame
 {
@@ -56,9 +54,8 @@ class Settings : public QFrame
         void taskbarStart_newValue(bool value);
         void mediaStream_newValue(QString value);
         void metaData_newValue(QString value);
-        void close_window();
     signals:
-        void updateSettings();
+        void changed();
 };
 
 #endif // SETTINGS_H

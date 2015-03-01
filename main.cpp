@@ -18,7 +18,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 
 #include <QApplication>
 #include <QSettings>
-#include "Window/window.h"
+#include "window.h"
 #include "Settings/settings.h"
 
 int main(int argc, char *argv[])

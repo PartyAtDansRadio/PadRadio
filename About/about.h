@@ -27,7 +27,6 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QVBoxLayout>
 #include <QFile>
 #include <QTextStream>
-#include <QPushButton>
 #include <QTextEdit>
 #include <QLabel>
 

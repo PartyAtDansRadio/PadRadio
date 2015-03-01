@@ -19,18 +19,19 @@ SOURCES += main.cpp\
     Settings/boolsetting.cpp \
     Settings/divsetting.cpp \
     Settings/textsetting.cpp \
-    Window/window.cpp \
-    Window/serverinfo.cpp \
-    Window/scrolltext.cpp \
-    Window/songcaster.cpp \
-    Window/timebar.cpp \
-    Window/toolbar.cpp \
-    Window/SongDisplay/songdisplay.cpp \
-    Window/SongDisplay/albumart.cpp \
-    Window/SongDisplay/songinfo.cpp \
+    Radio/radio.cpp \
+    Radio/serverinfo.cpp \
+    Radio/scrolltext.cpp \
+    Radio/songcaster.cpp \
+    Radio/timebar.cpp \
+    Radio/toolbar.cpp \
+    Radio/SongDisplay/songdisplay.cpp \
+    Radio/SongDisplay/albumart.cpp \
+    Radio/SongDisplay/songinfo.cpp \
     History/history.cpp \
     History/memory.cpp \
-    History/song.cpp
+    History/song.cpp \
+    window.cpp
 
 HEADERS += sammedia.h \
     About/about.h \
@@ -38,18 +39,19 @@ HEADERS += sammedia.h \
     Settings/boolsetting.h \
     Settings/divsetting.h \
     Settings/textsetting.h \
-    Window/window.h \
-    Window/serverinfo.h \
-    Window/scrolltext.h \
-    Window/songcaster.h \
-    Window/timebar.h \
-    Window/toolbar.h \
-    Window/SongDisplay/songdisplay.h \
-    Window/SongDisplay/albumart.h \
-    Window/SongDisplay/songinfo.h \
+    Radio/radio.h \
+    Radio/serverinfo.h \
+    Radio/scrolltext.h \
+    Radio/songcaster.h \
+    Radio/timebar.h \
+    Radio/toolbar.h \
+    Radio/SongDisplay/songdisplay.h \
+    Radio/SongDisplay/albumart.h \
+    Radio/SongDisplay/songinfo.h \
     History/history.h \
     History/memory.h \
-    History/song.h
+    History/song.h \
+    window.h
 
 OTHER_FILES += \
     android/AndroidManifest.xml \

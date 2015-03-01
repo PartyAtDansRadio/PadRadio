@@ -38,7 +38,6 @@ History::History(QWidget *parent) : QFrame(parent)
     table->setHorizontalHeaderItem(2, new QTableWidgetItem("Title"));
     table->setHorizontalHeaderItem(3, new QTableWidgetItem("Genre"));
     table->setHorizontalHeaderItem(4, new QTableWidgetItem("Year"));
-    QPushButton *closeWindow = new QPushButton("Close Window", this);
 
     //Init song list
     memory = new Memory("History.csv", this);
@@ -51,10 +50,6 @@ History::History(QWidget *parent) : QFrame(parent)
     setLayout(holder);
     holder->addWidget(title);
     holder->addWidget(table);
-    holder->addWidget(closeWindow);
-
-    //Setup events
-    connect(closeWindow, SIGNAL(clicked()), SLOT(close()));
 }
 
 void History::addToTable(Song *song)

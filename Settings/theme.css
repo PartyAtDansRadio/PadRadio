@@ -19,15 +19,16 @@ BoolSetting, DivSetting, TextSetting {
 }
 
 QLabel, QPushButton, QTextEdit {
-    color:white;
+    color: White;
 }
 
 TextSetting > QTextEdit {
-    background-color:#47A;
+    background-color: #47A;
 }
 
 TextSetting > QLineEdit{
-    background-color:white;
+    background-color: White;
+    color: Black;
 }
 
 QPushButton {

@@ -6,8 +6,9 @@
         <file alias="Settings/Theme">Settings/theme.css</file>
         <file alias="Settings/CheckChecked">Settings/checkboxChecked.png</file>
         <file alias="Settings/CheckUnchecked">Settings/checkboxUnchecked.png</file>
-        <file alias="Window/Theme">Window/theme.css</file>
-        <file alias="Window/ServerLink">Window/serverLink.html</file>
+        <file alias="Radio/Theme">Radio/theme.css</file>
+        <file alias="Radio/ServerLink">Radio/serverLink.html</file>
         <file alias="History/Theme">History/theme.css</file>
+        <file alias="Theme">theme.css</file>
     </qresource>
 </RCC>

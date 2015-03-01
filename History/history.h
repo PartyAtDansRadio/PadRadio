@@ -28,7 +28,6 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 #include <QScreen>
 #include <QTableWidget>
 #include <QLabel>
-#include <QPushButton>
 
 #include "sammedia.h"
 #include "memory.h"

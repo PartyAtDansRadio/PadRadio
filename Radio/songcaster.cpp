@@ -35,7 +35,7 @@ SongCaster::SongCaster(SamMedia *mediaPlayer, QWidget *parent) :
     serverLink->setTextFormat(Qt::RichText);
 
     //Set label html file
-    QFile html(":/Window/ServerLink");
+    QFile html(":/Radio/ServerLink");
     html.open(QFile::ReadOnly | QFile::Text);
     QTextStream htmlInput(&html);
     serverLink->setText(htmlInput.readAll());

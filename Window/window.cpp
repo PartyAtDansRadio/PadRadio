@@ -24,6 +24,7 @@ See project home page at: <https://github.com/PartyAtDansRadio/PadRadio>
 Window::Window(QWidget *parent) : QMainWindow(parent)
 {
     //Load settings
+    setWindowTitle("Party At Dans Radio");
     settings = new QSettings("Settings.ini", QSettings::IniFormat, this);
     //settings_update();
 
@@ -34,6 +35,8 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     mediaPlayer->play();
 
     //Setup QWidgets
+    QWidget *cWidget = new QWidget(this);
+    setCentralWidget(cWidget);
     serverInfo = new ServerInfo(mediaPlayer, this);
     songDisplay = new SongDisplay(mediaPlayer, this);
     timeBar = new TimeBar(mediaPlayer, this);
@@ -41,12 +44,9 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     QSpacerItem *spacer = new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
     songCaster = new SongCaster(mediaPlayer, this);
 
-    //Add central widget
-    QWidget *cWidget = new QWidget();
-    cWidget->setObjectName("CWidget");
+    //Config Layout
     QVBoxLayout *mainLayout = new QVBoxLayout();
     cWidget->setLayout(mainLayout);
-    setCentralWidget(cWidget);
     mainLayout->setContentsMargins(15, 10, 15, 10);
     mainLayout->setSpacing(10);
     mainLayout->addWidget(serverInfo);

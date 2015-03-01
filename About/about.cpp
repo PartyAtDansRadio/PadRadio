@@ -22,13 +22,6 @@ About::About(QWidget *parent) : QFrame(parent)
 {
     //Set window type and location
     setWindowTitle("Pad Radio - About");
-    setMaximumWidth(425);
-    setMaximumHeight(310);
-    setMinimumWidth(maximumWidth());
-    setMinimumHeight(maximumHeight());
-    QScreen *screen = QApplication::screens().at(0);
-    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter,
-                                    size(), screen->availableGeometry()));
 
     //Theme ui
     QFile theme(":/About/Theme");
@@ -41,7 +34,6 @@ About::About(QWidget *parent) : QFrame(parent)
     QLabel *title = new QLabel("About Party At Dans", this);
     QTextEdit *textZone = new QTextEdit(this);
     textZone->setReadOnly(true);
-    QPushButton *closeWindow = new QPushButton("Close Window", this);
 
     //Set textedit html file
     QFile html(":/About/Note");
@@ -55,8 +47,4 @@ About::About(QWidget *parent) : QFrame(parent)
     setLayout(holder);
     holder->addWidget(title);
     holder->addWidget(textZone);
-    holder->addWidget(closeWindow);
-
-    //Setup events
-    connect(closeWindow, SIGNAL(clicked()), SLOT(close()));
 }

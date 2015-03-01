@@ -43,7 +43,6 @@ Settings::Settings(QWidget *parent) : QFrame(parent)
     DivSetting *sep3 = new DivSetting("Server Settings", this);
     mediaStream = new TextSetting("Stream URL", MEDIASTREAM, this);
     metaData = new TextSetting("MetaData URL", METADATA, this);
-    QPushButton *closeWindow = new QPushButton("Close Window", this);
 
     //Show scroll bar widgets
     QVBoxLayout *holder = new QVBoxLayout(this);
@@ -70,16 +69,10 @@ Settings::Settings(QWidget *parent) : QFrame(parent)
     QVBoxLayout *noScroll = new QVBoxLayout(this);
     noScroll->addWidget(title);
     noScroll->addWidget(scroll);
-    noScroll->addWidget(closeWindow);
     setLayout(noScroll);
 
     //Set window type and location
     setWindowTitle("Pad Radio - Settings");
-    resize(minimumWidth(), height());
-    setMaximumWidth(minimumWidth());
-    QScreen *screen = QApplication::screens().at(0);
-    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter,
-                                    size(), screen->availableGeometry()));
 
     //Connect widgets events
     connect(rememberLocation, SIGNAL(newValue(bool)), SLOT(rememberLocation_newValue(bool)));
@@ -90,7 +83,6 @@ Settings::Settings(QWidget *parent) : QFrame(parent)
     connect(taskbarStart, SIGNAL(newValue(bool)), SLOT(taskbarStart_newValue(bool)));
     connect(mediaStream, SIGNAL(newValue(QString)), SLOT(mediaStream_newValue(QString)));
     connect(metaData, SIGNAL(newValue(QString)), SLOT(metaData_newValue(QString)));
-    connect(closeWindow, SIGNAL(clicked()), SLOT(close_window()));
 
     //Load INI Settings
     settings = new QSettings("Settings.ini", QSettings::IniFormat, this);
@@ -106,16 +98,19 @@ Settings::Settings(QWidget *parent) : QFrame(parent)
 void Settings::rememberLocation_newValue(bool value)
 {
     settings->setValue("rememberLocation", value);
+    emit changed();
 }
 
 void Settings::smallPlayer_newValue(bool value)
 {
     settings->setValue("smallPlayer", value);
+    emit changed();
 }
 
 void Settings::alwaysTop_newValue(bool value)
 {
     settings->setValue("alwaysTop", value);
+    emit changed();
 }
 
 void Settings::taskbarIcon_newValue(bool value)
@@ -129,32 +124,31 @@ void Settings::taskbarIcon_newValue(bool value)
         taskbarMessages->setEnabled(true);
         taskbarStart->setEnabled(true);
     }
+    emit changed();
 }
 
 void Settings::taskbarMessages_newValue(bool value)
 {
     settings->setValue("showMessages", value);
+    emit changed();
 }
 
 void Settings::taskbarStart_newValue(bool value)
 {
     settings->setValue("startInTaskbar", value);
+    emit changed();
 }
 
 void Settings::mediaStream_newValue(QString value)
 {
     settings->setValue("MediaStream", value);
+    emit changed();
 }
 
 void Settings::metaData_newValue(QString value)
 {
     settings->setValue("MetaData", value);
-}
-
-void Settings::close_window()
-{
-    emit updateSettings();
-    close();
+    emit changed();
 }
 
 void Settings::loadDefaults(QSettings *settings)
